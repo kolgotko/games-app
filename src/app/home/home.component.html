@@ -22,6 +22,6 @@
 <ul class="publishers-list">
   <li class="publisher-item" *ngFor="let publisher of (allPublishers | async)">
     <a class="publisher-item__link"
-       routerLink="/publisher/{{ publisher.publisherId }}" >{{ publisher.name }}</a>
+       routerLink="/publishers/{{ publisher.publisherId }}" >{{ publisher.name }}</a>
   </li>
 </ul>
