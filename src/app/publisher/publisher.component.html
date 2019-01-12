@@ -1,4 +1,5 @@
 <div class="publisher-name"> {{ name }} </div>
+<a class="editor-link" routerLink="/editor/publishers/{{ publisherId }}">edit</a>
 <ul class="publisher-games">
   <li class="game-item" *ngFor="let game of games">
     <div class="game-item__title"> {{ game.name }} </div>

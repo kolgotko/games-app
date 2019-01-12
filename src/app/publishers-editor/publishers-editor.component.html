@@ -1,0 +1,15 @@
+<ul class="publishers-list">
+
+  <li class="publisher-item" *ngFor="let publisher of publishers">
+    <div class="publisher-item__title"> {{ publisher.name }} </div>
+    <a class="publisher-item__editor-link"
+      routerLink="/editor/publishers/{{ publisher.publisherId }}">edit</a>
+    <button (click)="deletePublisher(publisher.publisherId)">delete</button>
+  </li>
+
+</ul>
+
+<form [formGroup]="newPublisherForm" (ngSubmit)="createPublisher()">
+  name: <input type="text" formControlName="name" />
+  <button [disabled]="!newPublisherForm.valid">create</button>
+</form>

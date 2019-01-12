@@ -12,6 +12,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomeComponent } from './home/home.component';
 import { DeveloperEditorComponent } from './developer-editor/developer-editor.component';
 import { DevelopersEditorComponent } from './developers-editor/developers-editor.component';
+import { PublisherEditorComponent } from './publisher-editor/publisher-editor.component';
+import { PublishersEditorComponent } from './publishers-editor/publishers-editor.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { DevelopersEditorComponent } from './developers-editor/developers-editor
     HomeComponent,
     DeveloperEditorComponent,
     DevelopersEditorComponent,
+    PublisherEditorComponent,
+    PublishersEditorComponent,
   ],
   imports: [
     BrowserModule,

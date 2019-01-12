@@ -1,0 +1,6 @@
+<form [formGroup]="publisherForm" (ngSubmit)="updatePublisher()">
+
+  name: <input type="text" formControlName="name" />
+  <button [disabled]="!publisherForm.valid">save</button>
+
+</form>

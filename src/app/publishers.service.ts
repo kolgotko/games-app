@@ -26,4 +26,23 @@ export class PublishersService {
     return this.http.get<Publisher>(`${this.url}/${id}`);
 
   }
+
+  public deletePublisher(id: number) {
+
+    return this.http.delete(`${this.url}/${id}`);
+
+  }
+
+  public createPublisher(publisher: Publisher) {
+
+    return this.http.post(this.url, publisher);
+
+  }
+
+  public updatePublisher(data: Publisher) {
+
+    return this.http.put(`${this.url}/${data.publisherId}`, data);
+
+  }
+
 }

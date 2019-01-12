@@ -10,6 +10,7 @@ import { Game } from '../interfaces/game';
 })
 export class PublisherComponent implements OnInit {
 
+  publisherId: number = 0;
   name: string = '';
   games: Game[] = [];
 
@@ -20,8 +21,14 @@ export class PublisherComponent implements OnInit {
 
   ngOnInit() {
 
-    let id = this.router.snapshot.params.id;
-    this.publishersService.getPublisher(id)
+    this.publisherId = this.router.snapshot.params.id;
+    this.loadPublishers();
+
+  }
+
+  loadPublishers() {
+
+    this.publishersService.getPublisher(this.publisherId)
       .subscribe(publisher => {
 
         this.name = publisher.name;
