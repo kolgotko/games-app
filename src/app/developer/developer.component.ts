@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DevelopersService } from '../developers.service';
+import { Developer } from '../interfaces/developer';
+import { Game } from '../interfaces/game';
 
 @Component({
   selector: 'app-developer',
@@ -7,9 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeveloperComponent implements OnInit {
 
-  constructor() { }
+  title: string = "";
+  games: Game[] = [];
+
+  constructor(
+    private router: ActivatedRoute,
+    private developersService: DevelopersService,
+  ) { }
 
   ngOnInit() {
+
+    let id = this.router.snapshot.params.id;
+
+    this.developersService.getDeveloper(id)
+      .subscribe(developer => {
+
+        this.title = developer.name;
+        this.games = developer.game;
+
+      });
+
   }
 
 }

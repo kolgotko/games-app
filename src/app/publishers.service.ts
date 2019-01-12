@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Publisher } from './interfaces/publisher';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +15,15 @@ export class PublishersService {
     private http: HttpClient,
   ) { }
 
-  public getAllPublishers() {
+  public getAllPublishers(): Observable<Publisher[]> {
 
-    return this.http.get(this.url);
+    return this.http.get<Publisher[]>(this.url);
+
+  }
+
+  public getPublisher(id): Observable<Publisher> {
+
+    return this.http.get<Publisher>(`${this.url}/${id}`);
 
   }
 }

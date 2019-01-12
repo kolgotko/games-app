@@ -1,4 +1,13 @@
-<h2>{{ id }}</h2>
-<p>
-  game works! {{ id }}
-</p>
+<div class="title"> {{ title }} </div>
+<div class="description"> {{ description }} </div>
+<ul class="genres">
+  <li class="genre" *ngFor="let genre of genres"> {{ genre.name }} </li>
+</ul>
+
+<a class="developer"
+  routerLink="/developers/{{ developer.developerId }}"
+  *ngIf="developer"> {{ developer.name }} </a>
+
+<a class="publisher"
+   routerLink="/publishers/{{ publisher.publisherId }}"
+   *ngIf="publisher"> {{ publisher.name }} </a>

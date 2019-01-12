@@ -1,3 +1,10 @@
-<p>
-  publisher works!
-</p>
+<div class="publisher-name"> {{ name }} </div>
+<ul class="publisher-games">
+  <li class="game-item" *ngFor="let game of games">
+    <div class="game-item__title"> {{ game.name }} </div>
+    <ul class="genres">
+      <li class="genre" *ngFor="let xref of game.gameXrefGenre">{{ xref.genre.name }}</li>
+    </ul>
+    <a class="game-item__link" routerLink="/games/{{ game.gameId }}">more</a>
+  </li>
+</ul>

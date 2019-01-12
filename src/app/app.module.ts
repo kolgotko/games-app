@@ -7,13 +7,17 @@ import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { DeveloperComponent } from './developer/developer.component';
 import { PublisherComponent } from './publisher/publisher.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
     DeveloperComponent,
-    PublisherComponent
+    PublisherComponent,
+    PageNotFoundComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
