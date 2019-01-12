@@ -1,0 +1,27 @@
+<ul class="games-list">
+  <li class="game-item" *ngFor="let game of (allGames | async)">
+    <div class="game-item__picture"></div>
+    <div class="game-item__title">
+      <a class="game-item__link"
+         routerLink="/games/{{ game.gameId }}" >{{ game.name }}</a>
+    </div>
+    <ul class="game-item__genres">
+      <li class="game-item__genre"
+        *ngFor="let genre of game.gameXrefGenre">{{ genre.genre.name }}</li>
+    </ul>
+  </li>
+</ul>
+
+<ul class="developers-list">
+  <li class="developer-item" *ngFor="let developer of (allDevelopers | async)">
+    <a class="developer-item__link"
+       routerLink="/developers/{{ developer.developerId }}" >{{ developer.name }}</a>
+  </li>
+</ul>
+
+<ul class="publishers-list">
+  <li class="publisher-item" *ngFor="let publisher of (allPublishers | async)">
+    <a class="publisher-item__link"
+       routerLink="/publisher/{{ publisher.publisherId }}" >{{ publisher.name }}</a>
+  </li>
+</ul>
