@@ -1,0 +1,28 @@
+<ul class="developers">
+  <li class="developer" *ngFor="let developer of developers">
+    <div class="developer__name">{{ developer.name }}</div>
+    <a class="developer__edit-link"
+      routerLink="/editor/developers/{{ developer.developerId }}">edit</a>
+    <button class="developer__delete-button"
+      (click)="deleteDeveloper(developer.developerId)">delete</button>
+  </li>
+</ul>
+<form [formGroup]="newDeveloperForm" (ngSubmit)="createDeveloper()">
+  name: <input type="text" formControlName="name" />
+  <div class="errors"
+    *ngIf="formName.invalid && (formName.dirty || formName.touched)">
+    <div class="errors__message" *ngIf="formName.errors.required">
+      name is required
+    </div>
+    <div class="errors__message" *ngIf="formName.errors.minlength">
+      min length 2
+    </div>
+    <div class="errors__message" *ngIf="formName.errors.maxlength">
+      max length 255
+    </div>
+    <div class="errors__message" *ngIf="formName.errors.pattern">
+      data incorrect
+    </div>
+  </div>
+  <button [disabled]="!newDeveloperForm.valid">create</button>
+</form>

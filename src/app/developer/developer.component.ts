@@ -11,6 +11,7 @@ import { Game } from '../interfaces/game';
 })
 export class DeveloperComponent implements OnInit {
 
+  developerId: number = 0;
   title: string = "";
   games: Game[] = [];
 
@@ -22,6 +23,7 @@ export class DeveloperComponent implements OnInit {
   ngOnInit() {
 
     let id = this.router.snapshot.params.id;
+    this.developerId = id;
 
     this.developersService.getDeveloper(id)
       .subscribe(developer => {

@@ -1,3 +1,4 @@
+<h2>games</h2>
 <ul class="games-list">
   <li class="game-item" *ngFor="let game of (allGames | async)">
     <div class="game-item__picture"></div>
@@ -12,6 +13,7 @@
   </li>
 </ul>
 
+<h2>developers</h2>
 <ul class="developers-list">
   <li class="developer-item" *ngFor="let developer of (allDevelopers | async)">
     <a class="developer-item__link"
@@ -19,6 +21,7 @@
   </li>
 </ul>
 
+<h2>publishers</h2>
 <ul class="publishers-list">
   <li class="publisher-item" *ngFor="let publisher of (allPublishers | async)">
     <a class="publisher-item__link"

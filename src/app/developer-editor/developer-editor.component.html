@@ -1,0 +1,22 @@
+<form [formGroup]="developerForm" (ngSubmit)="saveDeveloper()">
+  <label>
+    name:
+    <input type="text" formControlName="name" />
+    <div class="errors"
+      *ngIf="formName.invalid && (formName.dirty || formName.touched)">
+      <div class="errors__message" *ngIf="formName.errors.required">
+        name is required
+      </div>
+      <div class="errors__message" *ngIf="formName.errors.minlength">
+        min length 2
+      </div>
+      <div class="errors__message" *ngIf="formName.errors.maxlength">
+        max length 255
+      </div>
+      <div class="errors__message" *ngIf="formName.errors.pattern">
+        data incorrect
+      </div>
+    </div>
+  </label>
+  <button [disabled]="!developerForm.valid">save</button>
+</form>

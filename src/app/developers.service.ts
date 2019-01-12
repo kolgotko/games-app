@@ -21,9 +21,27 @@ export class DevelopersService {
 
   }
 
-  public getDeveloper(id): Observable<Developer> {
+  public getDeveloper(id: number): Observable<Developer> {
 
     return this.http.get<Developer>(`${this.url}/${id}`);
+
+  }
+
+  public deleteDeveloper(id: number) {
+
+    return this.http.delete(`${this.url}/${id}`);
+
+  }
+
+  public createDeveloper(name: string) {
+
+    return this.http.post(this.url, { id: 0, name });
+
+  }
+
+  public updateDeveloper(data: Developer) {
+
+    return this.http.put(`${this.url}/${data.developerId}`, data);
 
   }
 

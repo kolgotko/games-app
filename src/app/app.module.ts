@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
@@ -9,6 +10,8 @@ import { DeveloperComponent } from './developer/developer.component';
 import { PublisherComponent } from './publisher/publisher.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
+import { DeveloperEditorComponent } from './developer-editor/developer-editor.component';
+import { DevelopersEditorComponent } from './developers-editor/developers-editor.component';
 
 @NgModule({
   declarations: [
@@ -17,12 +20,15 @@ import { HomeComponent } from './home/home.component';
     DeveloperComponent,
     PublisherComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    DeveloperEditorComponent,
+    DevelopersEditorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
