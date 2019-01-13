@@ -9,6 +9,9 @@ import { DevelopersEditorComponent } from './developers-editor/developers-editor
 import { DeveloperEditorComponent } from './developer-editor/developer-editor.component';
 import { PublisherEditorComponent } from './publisher-editor/publisher-editor.component';
 import { PublishersEditorComponent } from './publishers-editor/publishers-editor.component';
+import { GenresEditorComponent } from './genres-editor/genres-editor.component';
+import { GamesEditorComponent } from './games-editor/games-editor.component';
+import { GameEditorComponent } from './game-editor/game-editor.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,6 +22,9 @@ const routes: Routes = [
   { path: 'editor/developers/:id', component: DeveloperEditorComponent },
   { path: 'editor/publishers', component: PublishersEditorComponent },
   { path: 'editor/publishers/:id', component: PublisherEditorComponent },
+  { path: 'editor/genres', component: GenresEditorComponent },
+  { path: 'editor/games', component: GamesEditorComponent },
+  { path: 'editor/games/:id', component: GameEditorComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 

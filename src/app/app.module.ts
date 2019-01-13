@@ -14,6 +14,9 @@ import { DeveloperEditorComponent } from './developer-editor/developer-editor.co
 import { DevelopersEditorComponent } from './developers-editor/developers-editor.component';
 import { PublisherEditorComponent } from './publisher-editor/publisher-editor.component';
 import { PublishersEditorComponent } from './publishers-editor/publishers-editor.component';
+import { GenresEditorComponent } from './genres-editor/genres-editor.component';
+import { GamesEditorComponent } from './games-editor/games-editor.component';
+import { GameEditorComponent } from './game-editor/game-editor.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { PublishersEditorComponent } from './publishers-editor/publishers-editor
     DevelopersEditorComponent,
     PublisherEditorComponent,
     PublishersEditorComponent,
+    GenresEditorComponent,
+    GamesEditorComponent,
+    GameEditorComponent,
   ],
   imports: [
     BrowserModule,
