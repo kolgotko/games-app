@@ -1,0 +1,26 @@
+<form [formGroup]="gameForm" (ngSubmit)="updateGame()">
+  game title: <input type="text" formControlName="name" /><br/>
+  game description:<br/>
+  <textarea formControlName="description"></textarea><br/>
+  developer:
+  <select formControlName="developerId">
+    <option value="" selected></option>
+    <option [value]="developer.developerId"
+      *ngFor="let developer of developers">{{ developer.name }}</option>
+  </select>
+  <br/>
+  publisher:
+  <select formControlName="publisherId">
+    <option value="" selected></option>
+    <option [value]="publisher.publisherId"
+      *ngFor="let publisher of publishers">{{ publisher.name }}</option>
+  </select>
+  <br/>
+  genres:<br/>
+  <label formArrayName="genres" *ngFor="let genreControl of gameFormGenres.controls; let i=index">
+    {{ genres[i].name }}
+    <input type="checkbox" [formControlName]="i" />
+  </label>
+  <br/>
+  <button [disabled]="!gameForm.valid">save</button>
+</form>

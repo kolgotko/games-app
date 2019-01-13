@@ -1,0 +1,44 @@
+<ul class="games-list">
+  <li class="game-item" *ngFor="let game of games">
+    <div class="game-item__title">{{ game.name }}</div>
+    <ul class="genres-list">
+      <li class="genre" *ngFor="let xref of game.gameXrefGenre">
+        {{ xref.genre.name }}
+      </li>
+    </ul>
+    <a class="game-item__editor-link"
+      routerLink="/editor/games/{{ game.gameId }}">edit</a>
+    <button class="game-item__delete-button"
+      (click)="deleteGame(game.gameId)">delete</button>
+  </li>
+</ul>
+
+<form [formGroup]="newGameForm" (ngSubmit)="createGame()">
+  name: <input type="text" formControlName="name" /><br/>
+  description:<br/>
+  <textarea formControlName="description"></textarea>
+  <br/>
+  developer:
+  <select formControlName="developerId">
+    <option value=""></option>
+    <option *ngFor="let developer of developers"
+      [value]="developer.developerId">{{ developer.name }}</option>
+  </select>
+  <br/>
+  publisher:
+  <select formControlName="publisherId">
+    <option value=""></option>
+    <option *ngFor="let publisher of publishers"
+      [value]="publisher.publisherId">{{ publisher.name }}</option>
+  </select>
+  <br/>
+  genres:
+  <label formArrayName="genres"
+    *ngFor="let control of newGameFormGenres.controls; let i=index">
+
+    {{ genres[i].name }}
+    <input type="checkbox" [formControlName]="i" />
+
+  </label>
+  <button [disabled]="!newGameForm.valid">create</button>
+</form>
