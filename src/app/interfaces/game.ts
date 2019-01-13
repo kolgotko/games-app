@@ -5,11 +5,11 @@ import { Genre } from "./genre";
 
 export interface Game {
 
-  gameId: string;
+  gameId: number;
   name: string;
   description: string;
   developerId: number;
-  piblisherId: number;
+  publisherId: number;
   developer?: Developer;
   publisher?: Publisher;
   gameXrefGenre: GameXrefGenre[];
