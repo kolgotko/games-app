@@ -1,3 +1,4 @@
+import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
@@ -10,7 +11,7 @@ import { Game } from './interfaces/game';
 })
 export class GamesService {
 
-  private readonly url: string = "//pulter.tv/0CD29A8C-8968-4D0F-9F00-921DDDD938C3/api/Games";
+  private readonly url = `${environment.apiUrl}/Games`;
   private http: HttpClient;
 
   constructor(http: HttpClient) {
@@ -25,9 +26,27 @@ export class GamesService {
 
   }
 
-  public getGame(id: string): Observable<Game> {
+  public getGame(id: number): Observable<Game> {
 
     return this.http.get<Game>(`${this.url}/${id}`);
+
+  }
+
+  public createGame(data: Game) {
+
+    return this.http.post<Game>(this.url, data);
+
+  }
+
+  public updateGame(data: Game) {
+
+    return this.http.put<Game>(`${this.url}/${data.gameId}`, data);
+
+  }
+
+  public deleteGame(id: number) {
+
+    return this.http.delete(`${this.url}/${id}`);
 
   }
 
