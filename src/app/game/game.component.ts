@@ -14,6 +14,7 @@ import { Developer } from '../interfaces/developer';
 })
 export class GameComponent implements OnInit {
 
+  gameId: number = 0;
   title = "";
   description = "";
   developer: Developer;
@@ -27,9 +28,14 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
 
-    let id = this.router.snapshot.params.id;
+    this.gameId = this.router.snapshot.params.id;
+    this.loadGame();
 
-    this.gamesService.getGame(id)
+  }
+
+  loadGame() {
+
+    this.gamesService.getGame(this.gameId)
       .subscribe(game => {
 
         this.title = game.name;

@@ -1,13 +1,15 @@
-<div class="title"> {{ title }} </div>
-<div class="description"> {{ description }} </div>
+<div class="title"> title: {{ title }} </div>
+<div class="description"> description: {{ description }} </div>
+genres:
 <ul class="genres">
   <li class="genre" *ngFor="let genre of genres"> {{ genre.name }} </li>
 </ul>
-
-<a class="developer"
+<a class="game-editor-link" routerLink="/editor/games/{{ gameId }}"> edit </a>
+<br/>
+developer: <a class="developer"
   routerLink="/developers/{{ developer.developerId }}"
   *ngIf="developer"> {{ developer.name }} </a>
-
-<a class="publisher"
+<br/>
+publisher: <a class="publisher"
    routerLink="/publishers/{{ publisher.publisherId }}"
    *ngIf="publisher"> {{ publisher.name }} </a>
