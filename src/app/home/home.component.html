@@ -1,4 +1,5 @@
 <h2>games</h2>
+<a class="editor-link" routerLink="/editor/games">gemaes editor</a>
 <ul class="games-list">
   <li class="game-item" *ngFor="let game of (allGames | async)">
     <div class="game-item__picture"></div>
@@ -14,6 +15,7 @@
 </ul>
 
 <h2>developers</h2>
+<a class="editor-link" routerLink="/editor/developers">developers editor</a>
 <ul class="developers-list">
   <li class="developer-item" *ngFor="let developer of (allDevelopers | async)">
     <a class="developer-item__link"
@@ -22,6 +24,7 @@
 </ul>
 
 <h2>publishers</h2>
+<a class="editor-link" routerLink="/editor/publishers">publishers editor</a>
 <ul class="publishers-list">
   <li class="publisher-item" *ngFor="let publisher of (allPublishers | async)">
     <a class="publisher-item__link"
