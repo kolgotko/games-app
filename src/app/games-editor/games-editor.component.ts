@@ -57,12 +57,15 @@ export class GamesEditorComponent implements OnInit {
 
   patchGenres() {
 
-    let newGameFormGenres = this.newGameFormGenres;
+    let genresFormControl = this.fb.array([]);
+
     this.genres.forEach(genre => {
 
-      newGameFormGenres.push(this.fb.control(false));
+      genresFormControl.push(this.fb.control(false));
 
     });
+
+    this.newGameForm.setControl('genres', genresFormControl);
 
   }
 
@@ -120,10 +123,10 @@ export class GamesEditorComponent implements OnInit {
 
     let data = {
       gameId: 0,
-      name: name as string,
-      description: description as string,
-      developerId: Number(developerId),
-      publisherId: Number(publisherId),
+      name,
+      description,
+      developerId,
+      publisherId,
       gameXrefGenre: gameXrefGenre,
     } as Game;
 

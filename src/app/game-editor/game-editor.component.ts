@@ -4,12 +4,19 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
+import { GameXrefGenresService } from '../game-xref-genres.service';
 import { GenresService } from '../genres.service';
 import { Game } from '../interfaces/game';
 import { Developer } from '../interfaces/developer';
 import { Publisher } from '../interfaces/publisher';
 import { Genre } from '../interfaces/genre';
 import { GameXrefGenre } from '../interfaces/game-xref-genre';
+
+enum Action {
+  Check,
+  Uncheck,
+  Skip,
+}
 
 @Component({
   selector: 'app-game-editor',
@@ -31,6 +38,7 @@ export class GameEditorComponent implements OnInit {
     private developersService: DevelopersService,
     private publishersService: PublishersService,
     private genresService: GenresService,
+    private gameXrefGenresService: GameXrefGenresService,
     private route: ActivatedRoute,
   ) { }
 
@@ -103,14 +111,16 @@ export class GameEditorComponent implements OnInit {
     let checkedGenres = this.game.gameXrefGenre
       .map(data => data.genreId);
 
-    let gameFormGenres = this.gameFormGenres;
+    let genresFormControl = this.fb.array([]);
 
     this.genres.forEach(genre => {
 
       let state = checkedGenres.includes(genre.genreId);
-      gameFormGenres.push(this.fb.control(state));
+      genresFormControl.push(this.fb.control(state));
 
     });
+
+    this.gameForm.setControl('genres', genresFormControl);
 
   }
 
@@ -124,34 +134,68 @@ export class GameEditorComponent implements OnInit {
       genres,
     } = this.gameForm.value;
 
-    let checkedGenres = this.genres.filter((genre, index) => genres[index]);
-
-    let gameXrefGenre = checkedGenres.map(genre => {
-
-      return {
-        gameId: this.gameId,
-        genreId: genre.genreId,
-        genre
-      } as GameXrefGenre;
-
-    });
-
     let data = {
       gameId: this.gameId,
       name,
       description,
       developerId,
       publisherId,
-      gameXrefGenre,
     } as Game;
-
-    console.log(data);
 
     await this.gamesService
       .updateGame(data)
       .toPromise();
 
+    let changesForGenres = this.getChangesForGenres();
+
+    let promises = changesForGenres
+      .filter(({ action }) => action !== Action.Skip)
+      .map(({ action, genre }) => {
+
+        if (action === Action.Check) {
+          return this.gameXrefGenresService
+            .addGenreToGame({
+              gameId: this.gameId,
+              genreId: genre.genreId,
+            })
+            .toPromise();
+        } else {
+          return this.gameXrefGenresService
+            .deleteGenreFromGame(this.gameId, genre.genreId)
+            .toPromise();
+        }
+
+      });
+
+    await Promise.all(promises);
+
     await this.loadGame();
+    this.patchForms();
+
+  }
+
+  private getChangesForGenres() {
+
+    let gameGenres = this.game.gameXrefGenre.map(data => data.genreId);
+    let genresForm = this.gameForm.value.genres;
+
+    return this.genres.map((genre, i) => {
+
+      if (genresForm[i] && !gameGenres.includes(genre.genreId)) {
+
+        return { action: Action.Check, genre };
+
+      } else if (!genresForm[i] && gameGenres.includes(genre.genreId)) {
+
+        return { action: Action.Uncheck, genre };
+
+      } else {
+
+        return { action: Action.Skip, genre };
+
+      }
+
+    });
 
   }
 
