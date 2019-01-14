@@ -2,8 +2,6 @@ import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
 import { Game } from './interfaces/game';
 
 @Injectable({
@@ -32,19 +30,19 @@ export class GamesService {
 
   }
 
-  public createGame(data: Game) {
+  public createGame(data: Game): Observable<any> {
 
     return this.http.post<Game>(this.url, data);
 
   }
 
-  public updateGame(data: Game) {
+  public updateGame(data: Game): Observable<any> {
 
-    return this.http.put<Game>(`${this.url}/${data.gameId}`, data);
+    return this.http.put(`${this.url}/${data.gameId}`, data);
 
   }
 
-  public deleteGame(id: number) {
+  public deleteGame(id: number): Observable<any> {
 
     return this.http.delete(`${this.url}/${id}`);
 

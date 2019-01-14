@@ -1,15 +1,15 @@
+import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Publisher } from './interfaces/publisher';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublishersService {
 
-  private readonly url: string = "//pulter.tv/0CD29A8C-8968-4D0F-9F00-921DDDD938C3/api/Publishers";
+  private readonly url: string = `${environment.apiUrl}/Publishers`;
 
   constructor(
     private http: HttpClient,
@@ -27,19 +27,19 @@ export class PublishersService {
 
   }
 
-  public deletePublisher(id: number) {
+  public deletePublisher(id: number): Observable<any> {
 
     return this.http.delete(`${this.url}/${id}`);
 
   }
 
-  public createPublisher(publisher: Publisher) {
+  public createPublisher(publisher: Publisher): Observable<any> {
 
     return this.http.post(this.url, publisher);
 
   }
 
-  public updatePublisher(data: Publisher) {
+  public updatePublisher(data: Publisher): Observable<any> {
 
     return this.http.put(`${this.url}/${data.publisherId}`, data);
 

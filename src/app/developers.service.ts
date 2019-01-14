@@ -1,3 +1,4 @@
+import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Developer } from './interfaces/developer';
@@ -9,7 +10,7 @@ import { map } from 'rxjs/operators';
 })
 export class DevelopersService {
 
-  private readonly url: string = "//pulter.tv/0CD29A8C-8968-4D0F-9F00-921DDDD938C3/api/Developers";
+  private readonly url = `${environment.apiUrl}/Developers`;
 
   constructor(
     private http: HttpClient,
@@ -27,19 +28,19 @@ export class DevelopersService {
 
   }
 
-  public deleteDeveloper(id: number) {
+  public deleteDeveloper(id: number): Observable<any> {
 
     return this.http.delete(`${this.url}/${id}`);
 
   }
 
-  public createDeveloper(name: string) {
+  public createDeveloper(name: string): Observable<any> {
 
     return this.http.post(this.url, { id: 0, name });
 
   }
 
-  public updateDeveloper(data: Developer) {
+  public updateDeveloper(data: Developer): Observable<any> {
 
     return this.http.put(`${this.url}/${data.developerId}`, data);
 
