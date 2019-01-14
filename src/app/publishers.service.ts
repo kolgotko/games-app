@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Publisher } from './interfaces/publisher';
+import { PublisherInterface } from './interfaces/publisher.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,15 +15,15 @@ export class PublishersService {
     private http: HttpClient,
   ) { }
 
-  public getAllPublishers(): Observable<Publisher[]> {
+  public getAllPublishers(): Observable<PublisherInterface[]> {
 
-    return this.http.get<Publisher[]>(this.url);
+    return this.http.get<PublisherInterface[]>(this.url);
 
   }
 
-  public getPublisher(id): Observable<Publisher> {
+  public getPublisher(id): Observable<PublisherInterface> {
 
-    return this.http.get<Publisher>(`${this.url}/${id}`);
+    return this.http.get<PublisherInterface>(`${this.url}/${id}`);
 
   }
 
@@ -33,13 +33,13 @@ export class PublishersService {
 
   }
 
-  public createPublisher(publisher: Publisher): Observable<any> {
+  public createPublisher(publisher: PublisherInterface): Observable<any> {
 
     return this.http.post(this.url, publisher);
 
   }
 
-  public updatePublisher(data: Publisher): Observable<any> {
+  public updatePublisher(data: PublisherInterface): Observable<any> {
 
     return this.http.put(`${this.url}/${data.publisherId}`, data);
 

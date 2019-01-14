@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { GenresService } from '../genres.service';
-import { Genre } from '../interfaces/genre';
+import { GenreInterface } from '../interfaces/genre.interface';
 
 @Component({
   selector: 'app-genres-editor',
@@ -10,7 +10,7 @@ import { Genre } from '../interfaces/genre';
 })
 export class GenresEditorComponent implements OnInit {
 
-  genres: Genre[] = [];
+  genres: GenreInterface[] = [];
   newGenreForm: FormGroup;
 
   constructor(
@@ -42,7 +42,7 @@ export class GenresEditorComponent implements OnInit {
 
   createGenre() {
 
-    let data: Genre = {
+    let data: GenreInterface = {
       genreId: 0,
       ...this.newGenreForm.value,
     };

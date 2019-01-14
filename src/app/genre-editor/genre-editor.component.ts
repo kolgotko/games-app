@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { GenresService } from '../genres.service';
-import { Genre } from '../interfaces/genre';
+import { GenreInterface } from '../interfaces/genre.interface';
 
 @Component({
   selector: 'app-genre-editor',
@@ -10,7 +10,7 @@ import { Genre } from '../interfaces/genre';
 })
 export class GenreEditorComponent implements OnInit {
 
-  @Input() genre: Genre;
+  @Input() genre: GenreInterface;
   @Input() show: Boolean = false;
   @Output() del: EventEmitter<void> = new EventEmitter;
   @Output() update: EventEmitter<void> = new EventEmitter;

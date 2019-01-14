@@ -4,11 +4,11 @@ import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
 import { GenresService } from '../genres.service';
-import { Game } from '../interfaces/game';
-import { Developer } from '../interfaces/developer';
-import { Publisher } from '../interfaces/publisher';
-import { Genre } from '../interfaces/genre';
-import { GameXrefGenre } from '../interfaces/game-xref-genre';
+import { GameInterface } from '../interfaces/game.interface';
+import { DeveloperInterface } from '../interfaces/developer.interface';
+import { PublisherInterface } from '../interfaces/publisher.interface';
+import { GenreInterface } from '../interfaces/genre.interface';
+import { GameXrefGenreInterface } from '../interfaces/game-xref-genre.interface';
 
 @Component({
   selector: 'app-games-editor',
@@ -17,10 +17,10 @@ import { GameXrefGenre } from '../interfaces/game-xref-genre';
 })
 export class GamesEditorComponent implements OnInit {
 
-  games: Game[] = [];
-  developers: Developer[] = [];
-  publishers: Publisher[] = [];
-  genres: Genre[] = [];
+  games: GameInterface[] = [];
+  developers: DeveloperInterface[] = [];
+  publishers: PublisherInterface[] = [];
+  genres: GenreInterface[] = [];
   newGameForm: FormGroup;
 
   constructor(
@@ -117,7 +117,7 @@ export class GamesEditorComponent implements OnInit {
 
       return {
         genreId: genre.genreId,
-      } as GameXrefGenre;
+      } as GameXrefGenreInterface;
 
     });
 
@@ -128,7 +128,7 @@ export class GamesEditorComponent implements OnInit {
       developerId,
       publisherId,
       gameXrefGenre: gameXrefGenre,
-    } as Game;
+    } as GameInterface;
 
     await this.gamesService.createGame(data)
       .toPromise();

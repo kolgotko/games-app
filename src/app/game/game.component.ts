@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GamesService } from '../games.service';
 
-import { Game } from '../interfaces/game';
-import { Genre } from '../interfaces/genre';
-import { Publisher } from '../interfaces/publisher';
-import { Developer } from '../interfaces/developer';
+import { GameInterface } from '../interfaces/game.interface';
+import { GenreInterface } from '../interfaces/genre.interface';
+import { PublisherInterface } from '../interfaces/publisher.interface';
+import { DeveloperInterface } from '../interfaces/developer.interface';
 
 @Component({
   selector: 'app-game',
@@ -17,9 +17,9 @@ export class GameComponent implements OnInit {
   gameId: number = 0;
   title = "";
   description = "";
-  developer: Developer;
-  publisher: Publisher;
-  genres: Genre[] = [];
+  developer: DeveloperInterface;
+  publisher: PublisherInterface;
+  genres: GenreInterface[] = [];
 
   constructor(
     private router: ActivatedRoute,

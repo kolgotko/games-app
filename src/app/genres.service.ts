@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Genre } from './interfaces/genre';
+import { GenreInterface } from './interfaces/genre.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,19 +15,19 @@ export class GenresService {
     private http: HttpClient,
   ) { }
 
-  getAllGenres(): Observable<Genre[]> {
+  getAllGenres(): Observable<GenreInterface[]> {
 
-    return this.http.get<Genre[]>(this.url);
-
-  }
-
-  getGenre(id: number): Observable<Genre> {
-
-    return this.http.get<Genre>(`${this.url}/${id}`);
+    return this.http.get<GenreInterface[]>(this.url);
 
   }
 
-  createGenre(data: Genre): Observable<any> {
+  getGenre(id: number): Observable<GenreInterface> {
+
+    return this.http.get<GenreInterface>(`${this.url}/${id}`);
+
+  }
+
+  createGenre(data: GenreInterface): Observable<any> {
 
     return this.http.post(this.url, data);
 
@@ -39,7 +39,7 @@ export class GenresService {
 
   }
 
-  updateGenre(data: Genre): Observable<any> {
+  updateGenre(data: GenreInterface): Observable<any> {
 
     return this.http.put(`${this.url}/${data.genreId}`, data);
 

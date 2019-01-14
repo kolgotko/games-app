@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublishersService } from '../publishers.service';
-import { Game } from '../interfaces/game';
+import { GameInterface } from '../interfaces/game.interface';
 
 @Component({
   selector: 'app-publisher',
@@ -12,7 +12,7 @@ export class PublisherComponent implements OnInit {
 
   publisherId: number = 0;
   name: string = '';
-  games: Game[] = [];
+  games: GameInterface[] = [];
 
   constructor(
     private router: ActivatedRoute,

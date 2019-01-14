@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PublishersService } from '../publishers.service';
-import { Publisher } from '../interfaces/publisher';
+import { PublisherInterface } from '../interfaces/publisher.interface';
 
 @Component({
   selector: 'app-publishers-editor',
@@ -11,7 +11,7 @@ import { Publisher } from '../interfaces/publisher';
 })
 export class PublishersEditorComponent implements OnInit {
 
-  publishers: Publisher[] = [];
+  publishers: PublisherInterface[] = [];
   newPublisherForm: FormGroup;
 
   constructor(
@@ -60,7 +60,7 @@ export class PublishersEditorComponent implements OnInit {
     let data = {
       publisherId: 0,
       name: this.formName.value,
-    } as Publisher;
+    } as PublisherInterface;
 
     this.publishersService.createPublisher(data)
       .subscribe(_ => {
@@ -75,3 +75,4 @@ export class PublishersEditorComponent implements OnInit {
   get formName() { return this.newPublisherForm.get('name'); }
 
 }
+

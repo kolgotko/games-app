@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DevelopersService } from '../developers.service';
-import { Developer } from '../interfaces/developer';
-import { Game } from '../interfaces/game';
+import { DeveloperInterface } from '../interfaces/developer.interface';
+import { GameInterface } from '../interfaces/game.interface';
 
 @Component({
   selector: 'app-developer',
@@ -13,7 +13,7 @@ export class DeveloperComponent implements OnInit {
 
   developerId: number = 0;
   title: string = "";
-  games: Game[] = [];
+  games: GameInterface[] = [];
 
   constructor(
     private router: ActivatedRoute,

@@ -6,11 +6,11 @@ import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
 import { GameXrefGenresService } from '../game-xref-genres.service';
 import { GenresService } from '../genres.service';
-import { Game } from '../interfaces/game';
-import { Developer } from '../interfaces/developer';
-import { Publisher } from '../interfaces/publisher';
-import { Genre } from '../interfaces/genre';
-import { GameXrefGenre } from '../interfaces/game-xref-genre';
+import { GameInterface } from '../interfaces/game.interface';
+import { DeveloperInterface } from '../interfaces/developer.interface';
+import { PublisherInterface } from '../interfaces/publisher.interface';
+import { GenreInterface } from '../interfaces/genre.interface';
+import { GameXrefGenreInterface } from '../interfaces/game-xref-genre.interface';
 
 enum Action {
   Check,
@@ -26,10 +26,10 @@ enum Action {
 export class GameEditorComponent implements OnInit {
 
   gameId: number = 0;
-  game: Game;
-  publishers: Publisher[] = [];
-  developers: Developer[] = [];
-  genres: Genre[];
+  game: GameInterface;
+  publishers: PublisherInterface[] = [];
+  developers: DeveloperInterface[] = [];
+  genres: GenreInterface[];
   gameForm: FormGroup;
 
   constructor(
@@ -140,7 +140,7 @@ export class GameEditorComponent implements OnInit {
       description,
       developerId,
       publisherId,
-    } as Game;
+    } as GameInterface;
 
     await this.gamesService
       .updateGame(data)

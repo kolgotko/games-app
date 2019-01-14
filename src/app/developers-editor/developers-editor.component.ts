@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DevelopersService } from '../developers.service';
-import { Developer } from '../interfaces/developer';
+import { DeveloperInterface } from '../interfaces/developer.interface';
 
 @Component({
   selector: 'app-developers-editor',
@@ -10,7 +10,7 @@ import { Developer } from '../interfaces/developer';
 })
 export class DevelopersEditorComponent implements OnInit {
 
-  developers: Developer[] = [];
+  developers: DeveloperInterface[] = [];
   newDeveloperForm: FormGroup;
 
   constructor(
@@ -69,3 +69,4 @@ export class DevelopersEditorComponent implements OnInit {
   get formName() { return this.newDeveloperForm.get('name'); }
 
 }
+

@@ -2,9 +2,9 @@ import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GameXrefGenre } from './interfaces/game-xref-genre';
-import { Game } from './interfaces/game';
-import { Genre } from './interfaces/genre';
+import { GameXrefGenreInterface } from './interfaces/game-xref-genre.interface';
+import { GameInterface } from './interfaces/game.interface';
+import { GenreInterface } from './interfaces/genre.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class GameXrefGenresService {
     private http: HttpClient,
   ) { }
 
-  public addGenreToGame(xref: GameXrefGenre): Observable<any> {
+  public addGenreToGame(xref: GameXrefGenreInterface): Observable<any> {
 
     return this.http.post(this.url, xref);
 

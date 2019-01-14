@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Developer } from './interfaces/developer';
+import { DeveloperInterface } from './interfaces/developer.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,15 +16,15 @@ export class DevelopersService {
     private http: HttpClient,
   ) { }
 
-  public getAllDevelopers(): Observable<Developer[]> {
+  public getAllDevelopers(): Observable<DeveloperInterface[]> {
 
-    return this.http.get<Developer[]>(this.url);
+    return this.http.get<DeveloperInterface[]>(this.url);
 
   }
 
-  public getDeveloper(id: number): Observable<Developer> {
+  public getDeveloper(id: number): Observable<DeveloperInterface> {
 
-    return this.http.get<Developer>(`${this.url}/${id}`);
+    return this.http.get<DeveloperInterface>(`${this.url}/${id}`);
 
   }
 
@@ -40,7 +40,7 @@ export class DevelopersService {
 
   }
 
-  public updateDeveloper(data: Developer): Observable<any> {
+  public updateDeveloper(data: DeveloperInterface): Observable<any> {
 
     return this.http.put(`${this.url}/${data.developerId}`, data);
 

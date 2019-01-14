@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PublishersService } from '../publishers.service';
-import { Publisher } from '../interfaces/publisher';
+import { PublisherInterface } from '../interfaces/publisher.interface';
 
 @Component({
   selector: 'app-publisher-editor',
@@ -12,7 +12,7 @@ import { Publisher } from '../interfaces/publisher';
 export class PublisherEditorComponent implements OnInit {
 
   publisherId: number = 0;
-  publisher: Publisher;
+  publisher: PublisherInterface;
   publisherForm: FormGroup;
 
   constructor(

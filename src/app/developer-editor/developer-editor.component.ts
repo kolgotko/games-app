@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DevelopersService } from '../developers.service';
-import { Developer } from '../interfaces/developer';
+import { DeveloperInterface } from '../interfaces/developer.interface';
 
 @Component({
   selector: 'app-developer-editor',
@@ -12,7 +12,7 @@ import { Developer } from '../interfaces/developer';
 export class DeveloperEditorComponent implements OnInit {
 
   private developerId: number = 0;
-  private developer: Developer;
+  private developer: DeveloperInterface;
   private developerForm: FormGroup;
 
   constructor(
