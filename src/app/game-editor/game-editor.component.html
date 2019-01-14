@@ -16,10 +16,12 @@
       *ngFor="let publisher of publishers">{{ publisher.name }}</option>
   </select>
   <br/>
-  genres:<br/>
-  <label formArrayName="genres" *ngFor="let genreControl of gameFormGenres.controls; let i=index">
-    {{ genres[i].name }}
+  genres: <a class="editor-link" routerLink="/editor/genres">genres editor</a>
+  <br/>
+  <label formArrayName="genres"
+    *ngFor="let genreControl of gameFormGenres.controls; let i=index">
     <input type="checkbox" [formControlName]="i" />
+    {{ genres[i].name }}
   </label>
   <br/>
   <button [disabled]="!gameForm.valid">save</button>

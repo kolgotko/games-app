@@ -32,13 +32,15 @@
       [value]="publisher.publisherId">{{ publisher.name }}</option>
   </select>
   <br/>
-  genres:
+  genres: <a class="editor-link" routerLink="/editor/genres">genres editor</a>
+  <br/>
   <label formArrayName="genres"
     *ngFor="let control of newGameFormGenres.controls; let i=index">
 
-    {{ genres[i].name }}
     <input type="checkbox" [formControlName]="i" />
+    {{ genres[i].name }}
 
   </label>
+  <br/>
   <button [disabled]="!newGameForm.valid">create</button>
 </form>
