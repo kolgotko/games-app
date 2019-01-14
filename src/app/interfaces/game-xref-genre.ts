@@ -4,6 +4,6 @@ export interface GameXrefGenre {
 
   gameId: number;
   genreId: number;
-  genre: Genre;
+  genre?: Genre;
 
 }

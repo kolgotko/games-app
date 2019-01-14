@@ -4,6 +4,6 @@ export interface Developer {
 
   developerId: number;
   name: string;
-  game: Game[];
+  game?: Game[];
 
 }

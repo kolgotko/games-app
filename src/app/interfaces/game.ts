@@ -9,9 +9,9 @@ export interface Game {
   name: string;
   description: string;
   developerId: number;
-  publisherId: number;
+  publisherId?: number;
   developer?: Developer;
   publisher?: Publisher;
-  gameXrefGenre: GameXrefGenre[];
+  gameXrefGenre?: GameXrefGenre[];
 
 }
