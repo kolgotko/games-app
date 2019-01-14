@@ -18,11 +18,12 @@
   <br/>
   genres: <a class="editor-link" routerLink="/editor/genres">genres editor</a>
   <br/>
-  <label formArrayName="genres"
-    *ngFor="let genreControl of gameFormGenres.controls; let i=index">
-    <input type="checkbox" [formControlName]="i" />
-    {{ genres[i].name }}
-  </label>
-  <br/>
+  <ng-container *ngFor="let genreControl of gameFormGenres.controls; let i=index">
+    <label formArrayName="genres">
+      <input type="checkbox" [formControlName]="i" />
+      {{ genres[i].name }}
+    </label>
+    <br/>
+  </ng-container>
   <button [disabled]="!gameForm.valid">save</button>
 </form>
