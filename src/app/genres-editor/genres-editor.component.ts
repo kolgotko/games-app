@@ -18,11 +18,10 @@ export class GenresEditorComponent implements OnInit {
     private genresService: GenresService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.initNewGenreForm();
-    this.loadGenres();
-
+    await this.loadGenres();
   }
 
   initNewGenreForm() {
@@ -33,12 +32,11 @@ export class GenresEditorComponent implements OnInit {
 
   }
 
-  loadGenres() {
+  async loadGenres() {
 
-    this.genresService.getAllGenres()
-      .subscribe(data => {
-        this.genres = data;
-      });
+    this.genres = await this.genresService
+      .getAllGenres()
+      .toPromise();
 
   }
 
@@ -55,15 +53,6 @@ export class GenresEditorComponent implements OnInit {
         this.loadGenres();
         this.newGenreForm.reset();
 
-      });
-
-  }
-
-  deleteGenre(id: number) {
-
-    this.genresService.deleteGenre(id)
-      .subscribe(_ => {
-        this.loadGenres();
       });
 
   }

@@ -1,8 +1,6 @@
 <ul class="genres-list">
-  <li class="genre-item" *ngFor="let genre of genres">
-    <div class="genre-item__title"> {{ genre.name }} </div>
-    <button class="genre-item__delete-button"
-      (click)="deleteGenre(genre.genreId)">delete</button>
+  <li class="genre-item" *ngFor="let genre of genres; let i=index">
+    <app-genre-editor [genre]="genre" (del)="loadGenres()"></app-genre-editor>
   </li>
 </ul>
 <form [formGroup]="newGenreForm" (ngSubmit)="createGenre()">

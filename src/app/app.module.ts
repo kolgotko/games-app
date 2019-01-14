@@ -17,6 +17,7 @@ import { PublishersEditorComponent } from './publishers-editor/publishers-editor
 import { GenresEditorComponent } from './genres-editor/genres-editor.component';
 import { GamesEditorComponent } from './games-editor/games-editor.component';
 import { GameEditorComponent } from './game-editor/game-editor.component';
+import { GenreEditorComponent } from './genre-editor/genre-editor.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { GameEditorComponent } from './game-editor/game-editor.component';
     GenresEditorComponent,
     GamesEditorComponent,
     GameEditorComponent,
+    GenreEditorComponent,
   ],
   imports: [
     BrowserModule,

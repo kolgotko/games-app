@@ -1,0 +1,10 @@
+<ng-container *ngIf="show">
+  <input type="text" [formControl]="control" />
+  <button (click)="commitEditorChanges();">save</button>
+  <button (click)="hideEditor()">cancel</button>
+</ng-container>
+<ng-container *ngIf="!show">
+  <span class="genre-item__title"> {{ genre.name }} </span>
+  <button (click)="showEditor()">edit</button>
+  <button class="genre-item__delete-button" (click)="deleteGenre()">delete</button>
+</ng-container>
