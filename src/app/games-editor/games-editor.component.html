@@ -8,8 +8,9 @@
     </ul>
     <a class="game-item__editor-link"
       routerLink="/editor/games/{{ game.gameId }}">edit</a>
-    <button class="game-item__delete-button"
-      (click)="deleteGame(game.gameId)">delete</button>
+    <button class="game-item__delete-button" *ngIf="!confirm.showing"
+      (click)="confirm.toggle()">delete</button>
+    <app-confirmation-dialog (yes)="deleteGame(game.gameId)" #confirm></app-confirmation-dialog>
   </li>
 </ul>
 

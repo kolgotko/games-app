@@ -4,7 +4,10 @@
     <a class="developer__edit-link"
       routerLink="/editor/developers/{{ developer.developerId }}">edit</a>
     <button class="developer__delete-button"
-      (click)="deleteDeveloper(developer.developerId)">delete</button>
+      *ngIf="!confirm.showing"
+      (click)="confirm.toggle()">delete</button>
+    <app-confirmation-dialog
+      (yes)="deleteDeveloper(developer.developerId)" #confirm></app-confirmation-dialog>
   </li>
 </ul>
 <form [formGroup]="newDeveloperForm" (ngSubmit)="createDeveloper()">

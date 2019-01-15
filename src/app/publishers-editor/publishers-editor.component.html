@@ -4,7 +4,9 @@
     <div class="publisher-item__title"> {{ publisher.name }} </div>
     <a class="publisher-item__editor-link"
       routerLink="/editor/publishers/{{ publisher.publisherId }}">edit</a>
-    <button (click)="deletePublisher(publisher.publisherId)">delete</button>
+    <button *ngIf="!confirm.showing" (click)="confirm.toggle()">delete</button>
+    <app-confirmation-dialog
+      (yes)="deletePublisher(publisher.publisherId)" #confirm></app-confirmation-dialog>
   </li>
 
 </ul>
