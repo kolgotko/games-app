@@ -1,8 +1,15 @@
 <form [formGroup]="gameForm" (ngSubmit)="updateGame()">
-  game title: <input type="text" formControlName="name" /><br/>
-  game description:<br/>
+  name:
+  <ng-container *ngIf="isInvalidFormControl(gameFormName)">
+    <div class="error-message" *ngIf="gameFormName.errors.required">name is required</div>
+  </ng-container>
+  <input type="text" formControlName="name" /><br/>
+  description:<br/>
   <textarea formControlName="description"></textarea><br/>
   developer:
+  <ng-container *ngIf="isInvalidFormControl(gameFormDeveloperId)">
+    <div class="error-message" *ngIf="gameFormDeveloperId.errors.required">developer is required</div>
+  </ng-container>
   <select formControlName="developerId">
     <option value="" selected></option>
     <option [value]="developer.developerId"
@@ -25,5 +32,5 @@
     </label>
     <br/>
   </ng-container>
-  <button [disabled]="!gameForm.valid">save</button>
+  <button [disabled]="gameForm.invalid">save</button>
 </form>

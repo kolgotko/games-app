@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-developer-editor',
@@ -21,11 +22,12 @@ export class DeveloperEditorComponent implements OnInit {
     private developersService: DevelopersService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.developerId = this.route.snapshot.params.id;
     this.initForm();
-    this.loadDeveloper();
+    await this.loadDeveloper();
+    this.patchDeveloperForm();
 
   }
 
@@ -34,41 +36,51 @@ export class DeveloperEditorComponent implements OnInit {
     this.developerForm = this.fb.group({
       name: ['', [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(255),
-        Validators.pattern(/^[\w\-\.\s]+$/),
       ]],
     })
 
   }
 
-  loadDeveloper() {
+  async loadDeveloper() {
 
-    this.developersService.getDeveloper(this.developerId)
-      .subscribe(data => {
-
-        this.developer = data;
-        this.developerForm.patchValue({
-          name: data.name,
-        })
-
-      });
+    this.developer = await this.developersService
+      .getDeveloper(this.developerId)
+      .toPromise();
 
   }
 
-  saveDeveloper() {
+  patchDeveloperForm() {
+
+    this.developerForm
+      .patchValue(this.developer);
+
+  }
+
+  async saveDeveloper() {
 
     let data = {
       developerId: this.developerId,
       ...this.developerForm.value,
     };
 
-    this.developersService
+    await this.developersService
       .updateDeveloper(data)
-      .subscribe(_ => this.loadDeveloper());
+      .toPromise();
+
+    await this.loadDeveloper();
+
+    new Noty({
+      text: `developer "${data.name}" saved!`,
+      type: 'success',
+    })
+      .show();
 
   }
 
-  get formName() { return this.developerForm.get('name'); }
+  isInvalidFormControl(control: FormControl): Boolean {
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  get developerFormName() { return this.developerForm.get('name'); }
 
 }

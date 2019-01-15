@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   allGames;
   allDevelopers;
   allPublishers;
+
+  gamesSlider: Swiper;
+  developersSlider: Swiper;
+  publishersSlider: Swiper;
 
   constructor(
     private gamesService: GamesService,
@@ -20,11 +25,35 @@ export class HomeComponent implements OnInit {
     private publishersService: PublishersService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.allGames = this.gamesService.getAllGames();
-    this.allDevelopers = this.developersService.getAllDevelopers();
-    this.allPublishers = this.publishersService.getAllPublishers();
+    this.allGames = await this.gamesService
+      .getAllGames()
+      .toPromise();
+
+    this.allDevelopers = await this.developersService
+      .getAllDevelopers()
+      .toPromise();
+
+    this.allPublishers = await this.publishersService
+      .getAllPublishers()
+      .toPromise();
+
+  }
+
+  ngAfterViewInit() {
+
+    this.gamesSlider = new Swiper('.games-slider', {});
+    this.developersSlider = new Swiper('.developers-slider', {});
+    this.publishersSlider = new Swiper('.publishers-slider', {});
+
+  }
+
+  ngOnDestroy() {
+
+    this.gamesSlider.destroy();
+    this.developersSlider.destroy();
+    this.publishersSlider.destroy();
 
   }
 

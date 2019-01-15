@@ -1,11 +1,14 @@
 <ul class="genres-list">
-  <li class="genre-item" *ngFor="let genre of genres; let i=index">
+  <li class="genre-item" *ngFor="let genre of genres">
     <app-genre-editor [genre]="genre" (del)="loadGenres()"></app-genre-editor>
   </li>
 </ul>
 <form [formGroup]="newGenreForm" (ngSubmit)="createGenre()">
 
+  <ng-container *ngIf="newGenreForm.invalid && (newGenreForm.touched || newGenreForm.dirty)">
+    <div class="error-message" *ngIf="newGenreFormName.errors.required"> name is required </div>
+  </ng-container>
   name: <input type="text" formControlName="name" />
-  <button>create</button>
+  <button [disabled]="!newGenreForm.valid">create</button>
 
 </form>

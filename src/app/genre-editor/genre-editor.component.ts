@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { GenresService } from '../genres.service';
 import { GenreInterface } from '../interfaces/genre.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-genre-editor',
@@ -33,9 +34,21 @@ export class GenreEditorComponent implements OnInit {
 
   async loadGenre() {
 
-    this.genre = await this.genresService
-      .getGenre(this.genre.genreId)
-      .toPromise();
+    try {
+
+      this.genre = await this.genresService
+        .getGenre(this.genre.genreId)
+        .toPromise();
+
+    } catch (error) {
+
+      new Noty({
+        text: error.message,
+        type: error,
+      })
+        .show();
+
+    }
 
   }
 
@@ -46,23 +59,59 @@ export class GenreEditorComponent implements OnInit {
       name: this.control.value,
     };
 
-    await this.genresService
-      .updateGenre(data)
-      .toPromise();
+    try {
 
-    await this.loadGenre();
-    this.hideEditor();
-    this.update.emit();
+      await this.genresService
+        .updateGenre(data)
+        .toPromise();
+
+      this.hideEditor();
+
+      await this.loadGenre();
+
+      new Noty({
+        text: 'genre saved!',
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: error.message,
+        type: 'error',
+      })
+        .show();
+
+    }
 
   }
 
   async deleteGenre() {
 
-    await this.genresService
-      .deleteGenre(this.genre.genreId)
-      .toPromise();
+    try {
 
-    this.del.emit();
+      await this.genresService
+        .deleteGenre(this.genre.genreId)
+        .toPromise();
+
+      new Noty({
+        text: `genre "${this.genre.name}" deleted!`,
+        type: 'success',
+      })
+        .show();
+
+      this.del.emit();
+
+    } catch (error) {
+
+      new Noty({
+        text: error.message,
+        type: 'error',
+      })
+        .show();
+
+    }
 
   }
 

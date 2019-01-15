@@ -10,22 +10,14 @@
       (yes)="deleteDeveloper(developer.developerId)" #confirm></app-confirmation-dialog>
   </li>
 </ul>
+
 <form [formGroup]="newDeveloperForm" (ngSubmit)="createDeveloper()">
-  name: <input type="text" formControlName="name" />
-  <div class="errors"
-    *ngIf="formName.invalid && (formName.dirty || formName.touched)">
-    <div class="errors__message" *ngIf="formName.errors.required">
+  name:
+  <ng-container class="errors" *ngIf="isInvalidFormControl(newDeveloperFormName)">
+    <div class="errors__message" *ngIf="newDeveloperFormName.errors.required">
       name is required
     </div>
-    <div class="errors__message" *ngIf="formName.errors.minlength">
-      min length 2
-    </div>
-    <div class="errors__message" *ngIf="formName.errors.maxlength">
-      max length 255
-    </div>
-    <div class="errors__message" *ngIf="formName.errors.pattern">
-      data incorrect
-    </div>
-  </div>
-  <button [disabled]="!newDeveloperForm.valid">create</button>
+  </ng-container>
+  <input type="text" formControlName="name" />
+  <button [disabled]="newDeveloperForm.invalid">create</button>
 </form>

@@ -11,6 +11,7 @@ import { DeveloperInterface } from '../interfaces/developer.interface';
 import { PublisherInterface } from '../interfaces/publisher.interface';
 import { GenreInterface } from '../interfaces/genre.interface';
 import { GameXrefGenreInterface } from '../interfaces/game-xref-genre.interface';
+import * as Noty from 'noty';
 
 enum Action {
   Check,
@@ -63,7 +64,7 @@ export class GameEditorComponent implements OnInit {
       ]],
       description: [''],
       developerId: [
-        '', Validators.required
+        '', [Validators.required]
       ],
       publisherId: [''],
       genres: this.fb.array([]),
@@ -172,6 +173,12 @@ export class GameEditorComponent implements OnInit {
     await this.loadGame();
     this.patchForms();
 
+    new Noty({
+      text: 'game saved!',
+      type: 'success',
+    })
+      .show();
+
   }
 
   private getChangesForGenres() {
@@ -197,6 +204,16 @@ export class GameEditorComponent implements OnInit {
 
     });
 
+  }
+
+  get gameFormName() { return this.gameForm.get('name') as FormControl; }
+
+  isInvalidFormControl(control: FormControl): Boolean {
+    return control.invalid && (control.touched || control.dirty);
+  }
+
+  get gameFormDeveloperId() {
+    return this.gameForm.get('developerId') as FormControl;
   }
 
   get gameFormGenres() {

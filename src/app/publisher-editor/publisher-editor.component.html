@@ -1,6 +1,12 @@
 <form [formGroup]="publisherForm" (ngSubmit)="updatePublisher()">
 
-  name: <input type="text" formControlName="name" />
-  <button [disabled]="!publisherForm.valid">save</button>
+  name:
+  <ng-container *ngIf="isInvalidFormControl(publisherFormName)">
+    <div class="error-message" *ngIf="publisherFormName.errors.required">
+      name is required
+    </div>
+  </ng-container>
+  <input type="text" formControlName="name" />
+  <button [disabled]="publisherForm.invalid">save</button>
 
 </form>

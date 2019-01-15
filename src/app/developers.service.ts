@@ -34,9 +34,9 @@ export class DevelopersService {
 
   }
 
-  public createDeveloper(name: string): Observable<any> {
+  public createDeveloper(data: DeveloperInterface): Observable<any> {
 
-    return this.http.post(this.url, { id: 0, name });
+    return this.http.post(this.url, data);
 
   }
 

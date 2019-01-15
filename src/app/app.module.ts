@@ -19,6 +19,7 @@ import { GamesEditorComponent } from './games-editor/games-editor.component';
 import { GameEditorComponent } from './game-editor/game-editor.component';
 import { GenreEditorComponent } from './genre-editor/genre-editor.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,9 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

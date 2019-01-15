@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-developers-editor',
@@ -18,10 +19,10 @@ export class DevelopersEditorComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.loadDevelopers();
     this.initNewDeveloperForm();
+    await this.loadDevelopers();
 
   }
 
@@ -30,43 +31,64 @@ export class DevelopersEditorComponent implements OnInit {
     this.newDeveloperForm = this.fb.group({
       name: ['', [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(255),
-        Validators.pattern(/^[\w\s\-\.]+$/)
       ]],
     });
 
   }
 
-  loadDevelopers() {
+  async loadDevelopers() {
 
-    this.developersService.getAllDevelopers()
-      .subscribe(developers => this.developers = developers);
+    this.developers = await this.developersService
+      .getAllDevelopers()
+      .toPromise();
 
   }
 
-  createDeveloper() {
+  async createDeveloper() {
 
     let name = this.newDeveloperForm.get('name').value;
 
-    this.developersService
-      .createDeveloper(name)
-      .subscribe(_ => {
-        this.loadDevelopers();
-        this.newDeveloperForm.get('name').reset();
-      });
+    let data = {
+      developerId: 0,
+      name,
+    };
+
+    await this.developersService
+      .createDeveloper(data)
+      .toPromise();
+
+    await this.loadDevelopers();
+    this.newDeveloperForm.reset();
+
+    new Noty({
+      text: `developer ${name} created!`,
+      type: 'success',
+    })
+      .show();
 
   }
 
-  deleteDeveloper(id: number) {
+  async deleteDeveloper(id: number) {
 
-    this.developersService
+    await this.developersService
       .deleteDeveloper(id)
-      .subscribe(_ => this.loadDevelopers());
+      .toPromise();
+
+    await this.loadDevelopers();
+
+    new Noty({
+      text: 'developer deleted!',
+      type: 'success',
+    })
+      .show();
 
   }
 
-  get formName() { return this.newDeveloperForm.get('name'); }
+  isInvalidFormControl(control: FormControl): Boolean {
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  get newDeveloperFormName() { return this.newDeveloperForm.get('name'); }
 
 }
 

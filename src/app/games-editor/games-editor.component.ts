@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
@@ -9,6 +9,7 @@ import { DeveloperInterface } from '../interfaces/developer.interface';
 import { PublisherInterface } from '../interfaces/publisher.interface';
 import { GenreInterface } from '../interfaces/genre.interface';
 import { GameXrefGenreInterface } from '../interfaces/game-xref-genre.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-games-editor',
@@ -133,6 +134,12 @@ export class GamesEditorComponent implements OnInit {
     await this.gamesService.createGame(data)
       .toPromise();
 
+    new Noty({
+      text: `game "${data.name}" created!`,
+      type: 'success',
+    })
+      .show();
+
     this.newGameForm.reset();
     await this.loadGames();
 
@@ -143,8 +150,26 @@ export class GamesEditorComponent implements OnInit {
     await this.gamesService.deleteGame(id)
     .toPromise();
 
+    new Noty({
+      text: `game deleted!`,
+      type: 'success',
+    })
+      .show();
+
     await this.loadGames();
 
+  }
+
+  isInvalidFormControl(control: FormControl): Boolean {
+    return control.invalid && (control.touched || control.dirty);
+  }
+
+  get newGameFormName() {
+    return this.newGameForm.get('name') as FormControl;
+  }
+
+  get newGameFormDeveloperId() {
+    return this.newGameForm.get('developerId') as FormControl;
   }
 
   get newGameFormGenres() {

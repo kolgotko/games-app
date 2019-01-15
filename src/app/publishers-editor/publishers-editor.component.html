@@ -1,5 +1,4 @@
 <ul class="publishers-list">
-
   <li class="publisher-item" *ngFor="let publisher of publishers">
     <div class="publisher-item__title"> {{ publisher.name }} </div>
     <a class="publisher-item__editor-link"
@@ -8,10 +7,15 @@
     <app-confirmation-dialog
       (yes)="deletePublisher(publisher.publisherId)" #confirm></app-confirmation-dialog>
   </li>
-
 </ul>
 
 <form [formGroup]="newPublisherForm" (ngSubmit)="createPublisher()">
-  name: <input type="text" formControlName="name" />
-  <button [disabled]="!newPublisherForm.valid">create</button>
+  name:
+  <ng-container *ngIf="isInvalidFormControl(newPublisherFormName)">
+    <div class="error-message" *ngIf="newPublisherFormName.errors.required">
+      name is required
+    </div>
+  </ng-container>
+  <input type="text" formControlName="name" />
+  <button [disabled]="newPublisherForm.invalid">create</button>
 </form>

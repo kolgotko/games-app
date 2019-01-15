@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { PublishersService } from '../publishers.service';
 import { PublisherInterface } from '../interfaces/publisher.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-publishers-editor',
@@ -20,59 +21,74 @@ export class PublishersEditorComponent implements OnInit {
     private publishersService: PublishersService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.loadPublishers();
     this.initForm();
+    await this.loadPublishers();
 
   }
 
   initForm() {
 
     this.newPublisherForm = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
     });
 
   }
 
-  loadPublishers() {
+  async loadPublishers() {
 
-    this.publishersService.getAllPublishers()
-      .subscribe(data => {
-        this.publishers = data;
-      });
-
-  }
-
-  deletePublisher(id: number) {
-
-    this.publishersService.deletePublisher(id)
-      .subscribe(_ => {
-
-        this.loadPublishers();
-
-      });
+    this.publishers = await this.publishersService
+      .getAllPublishers()
+      .toPromise();
 
   }
 
-  createPublisher() {
+  async deletePublisher(id: number) {
+
+    await this.publishersService
+      .deletePublisher(id)
+      .toPromise();
+
+    await this.loadPublishers();
+
+    new Noty({
+      text: `publisher deleted!`,
+      type: 'success',
+    })
+      .show();
+
+  }
+
+  async createPublisher() {
 
     let data = {
       publisherId: 0,
-      name: this.formName.value,
+      ...this.newPublisherForm.value,
     } as PublisherInterface;
 
-    this.publishersService.createPublisher(data)
-      .subscribe(_ => {
+    await this.publishersService
+      .createPublisher(data)
+      .toPromise();
 
-        this.loadPublishers();
-        this.newPublisherForm.reset();
+    await this.loadPublishers();
+    this.newPublisherForm.reset();
 
-      });
+    new Noty({
+      text: `publisher "${data.name}" created!`,
+      type: 'success',
+    })
+      .show();
 
   }
 
-  get formName() { return this.newPublisherForm.get('name'); }
+  isInvalidFormControl(control: FormControl): Boolean {
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  get newPublisherFormName() {
+    return this.newPublisherForm.get('name') as FormControl;
+  }
 
 }
 

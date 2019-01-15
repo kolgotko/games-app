@@ -15,11 +15,22 @@
 </ul>
 
 <form [formGroup]="newGameForm" (ngSubmit)="createGame()">
-  name: <input type="text" formControlName="name" /><br/>
+  name:
+  <ng-container *ngIf="isInvalidFormControl(newGameFormName)">
+    <div class="error-message" *ngIf="newGameFormName.errors.required">
+      name is required
+    </div>
+  </ng-container>
+  <input type="text" formControlName="name" /><br/>
   description:<br/>
   <textarea formControlName="description"></textarea>
   <br/>
   developer:
+  <ng-container *ngIf="isInvalidFormControl(newGameFormDeveloperId)">
+    <div class="error-message" *ngIf="newGameFormDeveloperId.errors.required">
+      developer is required
+    </div>
+  </ng-container>
   <select formControlName="developerId">
     <option value=""></option>
     <option *ngFor="let developer of developers"
@@ -37,10 +48,8 @@
   <br/>
   <ng-container *ngFor="let control of newGameFormGenres.controls; let i=index">
     <label formArrayName="genres">
-
       <input type="checkbox" [formControlName]="i" />
       {{ genres[i].name }}
-
     </label>
     <br/>
   </ng-container>

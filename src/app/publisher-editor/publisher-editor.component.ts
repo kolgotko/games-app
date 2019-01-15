@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PublishersService } from '../publishers.service';
 import { PublisherInterface } from '../interfaces/publisher.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-publisher-editor',
@@ -21,50 +22,65 @@ export class PublisherEditorComponent implements OnInit {
     private publishersService: PublishersService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.publisherId = this.route.snapshot.params.id;
     this.initForm();
-    this.loadPublisher();
+    await this.loadPublisher();
+    this.patchPublisherForm();
 
   }
 
   initForm() {
 
     this.publisherForm = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
     });
 
   }
 
-  loadPublisher() {
+  patchPublisherForm() {
 
-    this.publishersService.getPublisher(this.publisherId)
-      .subscribe(publisher => {
-
-        this.publisher = publisher;
-        this.publisherForm.patchValue({
-          name: publisher.name,
-        });
-
-      })
+    this.publisherForm
+      .patchValue(this.publisher);
 
   }
 
-  updatePublisher() {
+  async loadPublisher() {
+
+    this.publisher = await this.publishersService
+      .getPublisher(this.publisherId)
+      .toPromise();
+
+  }
+
+  async updatePublisher() {
 
     let data = {
       publisherId: this.publisherId,
       ...this.publisherForm.value,
     };
 
-    this.publishersService.updatePublisher(data)
-      .subscribe(_ => {
-        this.loadPublisher();
-      })
+    await this.publishersService
+      .updatePublisher(data)
+      .toPromise();
+
+    await this.loadPublisher();
+
+    new Noty({
+      text: `publisher "${data.name}" saved!`,
+      type: 'success',
+    })
+      .show();
 
   }
 
-  get formName() { return this.publisherForm.get('name'); }
+  isInvalidFormControl(control: FormControl): Boolean {
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  get publisherFormName() {
+    return this.publisherForm.get('name') as FormControl;
+  }
 
 }
