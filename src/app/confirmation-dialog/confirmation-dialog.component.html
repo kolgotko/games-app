@@ -1,0 +1,5 @@
+<div class="confirmation-dialog" *ngIf="showing">
+  <div class="confirmation-dialog__message">{{ message }}</div>
+  <button class="confirmation-dialog__yes-button" (click)="yes.emit(); hide()">yes</button>
+  <button class="confirmation-dialog__no-button" (click)="no.emit(); hide()">no</button>
+</div>
