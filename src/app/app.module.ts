@@ -18,6 +18,7 @@ import { GenresEditorComponent } from './genres-editor/genres-editor.component';
 import { GamesEditorComponent } from './games-editor/games-editor.component';
 import { GameEditorComponent } from './game-editor/game-editor.component';
 import { GenreEditorComponent } from './genre-editor/genre-editor.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { GenreEditorComponent } from './genre-editor/genre-editor.component';
     GamesEditorComponent,
     GameEditorComponent,
     GenreEditorComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,5 +6,8 @@
 <ng-container *ngIf="!show">
   <span class="genre-item__title"> {{ genre.name }} </span>
   <button (click)="showEditor()">edit</button>
-  <button class="genre-item__delete-button" (click)="deleteGenre()">delete</button>
+  <button class="genre-item__delete-button"
+    *ngIf="!confirm.showing"
+    (click)="confirm.toggle()">delete</button>
+  <app-confirmation-dialog (yes)="deleteGenre()" #confirm></app-confirmation-dialog>
 </ng-container>
