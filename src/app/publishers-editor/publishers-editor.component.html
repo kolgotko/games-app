@@ -1,14 +1,20 @@
-<ul class="publishers-list">
-  <li class="publisher-item" *ngFor="let publisher of publishers">
-    <div class="publisher-item__title"> {{ publisher.name }} </div>
-    <a class="publisher-item__editor-link"
-      routerLink="/editor/publishers/{{ publisher.publisherId }}">edit</a>
-    <button *ngIf="!confirm.showing" (click)="confirm.toggle()">delete</button>
-    <app-confirmation-dialog
-      (yes)="deletePublisher(publisher.publisherId)" #confirm></app-confirmation-dialog>
-  </li>
-</ul>
-
+<h2 class="title">Existing publishers</h2>
+<ng-container *ngIf="load; else preloader">
+  <ul class="publishers-list">
+    <li class="publisher-item" *ngFor="let publisher of publishers">
+      <div class="publisher-item__title"> {{ publisher.name }} </div>
+      <a class="publisher-item__editor-link"
+        routerLink="/editor/publishers/{{ publisher.publisherId }}">edit</a>
+      <button *ngIf="!confirm.showing" (click)="confirm.toggle()">delete</button>
+      <app-confirmation-dialog
+        (yes)="deletePublisher(publisher.publisherId)" #confirm></app-confirmation-dialog>
+    </li>
+  </ul>
+</ng-container>
+<ng-template #preloader>
+  <div class="preloader">loading ...</div>
+</ng-template>
+<h2 class="title">New publisher</h2>
 <form [formGroup]="newPublisherForm" (ngSubmit)="createPublisher()">
   name:
   <ng-container *ngIf="isInvalidFormControl(newPublisherFormName)">
@@ -17,5 +23,6 @@
     </div>
   </ng-container>
   <input type="text" formControlName="name" />
-  <button [disabled]="newPublisherForm.invalid">create</button>
+  <button class="submit-button"
+    [class.submit-button_disabled]="newPublisherForm.invalid">create</button>
 </form>

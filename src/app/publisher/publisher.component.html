@@ -1,11 +1,16 @@
-<div class="publisher-name"> {{ name }} </div>
-<a class="editor-link" routerLink="/editor/publishers/{{ publisherId }}">edit</a>
-<ul class="publisher-games">
-  <li class="game-item" *ngFor="let game of games">
-    <div class="game-item__title"> {{ game.name }} </div>
-    <ul class="genres">
-      <li class="genre" *ngFor="let xref of game.gameXrefGenre">{{ xref.genre.name }}</li>
-    </ul>
-    <a class="game-item__link" routerLink="/games/{{ game.gameId }}">more</a>
-  </li>
-</ul>
+<ng-container *ngIf="load; else preloader">
+  name: <div class="name"> {{ publisher.name }} </div>
+  <a class="editor-link" routerLink="/editor/publishers/{{ publisherId }}">edit</a>
+  <ul class="publisher-games">
+    <li class="game-item" *ngFor="let game of games">
+      <div class="game-item__title"> {{ game.name }} </div>
+      <ul class="genres">
+        <li class="genre" *ngFor="let xref of game.gameXrefGenre">{{ xref.genre.name }}</li>
+      </ul>
+      <a class="game-item__link" routerLink="/games/{{ game.gameId }}">more</a>
+    </li>
+  </ul>
+</ng-container>
+<ng-template #preloader>
+  <div class="preloader">loading ...</div>
+</ng-template>

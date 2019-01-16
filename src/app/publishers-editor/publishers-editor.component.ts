@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup, FormControl, AbstractControl, FormBuilder, Validators
+} from '@angular/forms';
 import { PublishersService } from '../publishers.service';
 import { PublisherInterface } from '../interfaces/publisher.interface';
 import * as Noty from 'noty';
@@ -14,6 +16,7 @@ export class PublishersEditorComponent implements OnInit {
 
   publishers: PublisherInterface[] = [];
   newPublisherForm: FormGroup;
+  load = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +28,7 @@ export class PublishersEditorComponent implements OnInit {
 
     this.initForm();
     await this.loadPublishers();
+    this.load = true;
 
   }
 
@@ -38,51 +42,98 @@ export class PublishersEditorComponent implements OnInit {
 
   async loadPublishers() {
 
-    this.publishers = await this.publishersService
-      .getAllPublishers()
-      .toPromise();
+    try {
+
+      this.publishers = await this.publishersService
+        .getAllPublishers()
+        .toPromise();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error loading publisher. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
   async deletePublisher(id: number) {
 
-    await this.publishersService
-      .deletePublisher(id)
-      .toPromise();
+    try {
 
-    await this.loadPublishers();
+      await this.publishersService
+        .deletePublisher(id)
+        .toPromise();
 
-    new Noty({
-      text: `publisher deleted!`,
-      type: 'success',
-    })
-      .show();
+      await this.loadPublishers();
+
+      new Noty({
+        text: `publisher deleted!`,
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error delete publisher. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
   async createPublisher() {
+
+    if (this.newPublisherForm.invalid) {
+
+      Object.values(this.newPublisherForm.controls)
+        .forEach(control => control.markAsTouched());
+
+      return;
+    }
 
     const data = {
       publisherId: 0,
       ...this.newPublisherForm.value,
     } as PublisherInterface;
 
-    await this.publishersService
-      .createPublisher(data)
-      .toPromise();
+    try {
 
-    await this.loadPublishers();
-    this.newPublisherForm.reset();
+      await this.publishersService
+        .createPublisher(data)
+        .toPromise();
 
-    new Noty({
-      text: `publisher "${data.name}" created!`,
-      type: 'success',
-    })
-      .show();
+      await this.loadPublishers();
+      this.newPublisherForm.reset();
+
+      new Noty({
+        text: `publisher "${data.name}" created!`,
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error create publisher. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
-  isInvalidFormControl(control: FormControl): Boolean {
+  isInvalidFormControl(control: AbstractControl): Boolean {
     return control.invalid && (control.dirty || control.touched);
   }
 

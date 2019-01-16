@@ -13,6 +13,7 @@ export class GenresEditorComponent implements OnInit {
 
   genres: GenreInterface[] = [];
   newGenreForm: FormGroup;
+  load = false;
 
   constructor(
     private fb: FormBuilder,
@@ -23,6 +24,7 @@ export class GenresEditorComponent implements OnInit {
 
     this.initNewGenreForm();
     await this.loadGenres();
+    this.load = true;
 
   }
 
@@ -57,6 +59,14 @@ export class GenresEditorComponent implements OnInit {
 
   async createGenre() {
 
+    if (this.newGenreForm.invalid) {
+
+      Object.values(this.newGenreForm.controls)
+        .forEach(control => control.markAsTouched());
+
+      return;
+    }
+
     const data: GenreInterface = {
       genreId: 0,
       ...this.newGenreForm.value,
@@ -81,7 +91,7 @@ export class GenresEditorComponent implements OnInit {
     } catch (error) {
 
       new Noty({
-        text: error.message,
+        text: `Error create genre. Details: ${error.message}`,
         type: 'error',
         timeout: false,
       })

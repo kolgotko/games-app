@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import {
+  FormBuilder, FormGroup, FormControl, FormArray, Validators, AbstractControl
+} from '@angular/forms';
 import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
@@ -32,6 +34,7 @@ export class GameEditorComponent implements OnInit {
   developers: DeveloperInterface[] = [];
   genres: GenreInterface[];
   gameForm: FormGroup;
+  load = false;
 
   constructor(
     private fb: FormBuilder,
@@ -52,6 +55,7 @@ export class GameEditorComponent implements OnInit {
     await this.loadPublishers();
     await this.loadGenres();
     this.patchForms();
+    this.load = true;
 
   }
 
@@ -125,6 +129,25 @@ export class GameEditorComponent implements OnInit {
 
   }
 
+  async updateGameAndGenres() {
+
+    if (this.gameForm.invalid) {
+      Object.values(this.gameForm.controls)
+        .forEach(control => {
+          control.markAsTouched();
+        });
+
+      return;
+    }
+
+    await this.updateGame();
+    await this.updateGameGenres();
+
+    await this.loadGame();
+    this.patchForms();
+
+  }
+
   async updateGame() {
 
     const {
@@ -143,9 +166,32 @@ export class GameEditorComponent implements OnInit {
       publisherId,
     } as GameInterface;
 
-    await this.gamesService
-      .updateGame(data)
-      .toPromise();
+    try {
+
+      await this.gamesService
+        .updateGame(data)
+        .toPromise();
+
+      new Noty({
+        text: 'game data saved!',
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error update game data. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
+
+  }
+
+  async updateGameGenres() {
 
     const changesForGenres = this.getChangesForGenres();
 
@@ -168,16 +214,26 @@ export class GameEditorComponent implements OnInit {
 
       });
 
-    await Promise.all(promises);
+    try {
 
-    await this.loadGame();
-    this.patchForms();
+      await Promise.all(promises);
 
-    new Noty({
-      text: 'game saved!',
-      type: 'success',
-    })
-      .show();
+      new Noty({
+        text: 'game genres saved!',
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error update game genres. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
@@ -208,7 +264,7 @@ export class GameEditorComponent implements OnInit {
 
   get gameFormName() { return this.gameForm.get('name') as FormControl; }
 
-  isInvalidFormControl(control: FormControl): Boolean {
+  isInvalidFormControl(control: AbstractControl): Boolean {
     return control.invalid && (control.touched || control.dirty);
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, AbstractControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import * as Noty from 'noty';
@@ -12,9 +12,10 @@ import * as Noty from 'noty';
 })
 export class DeveloperEditorComponent implements OnInit {
 
-  private developerId = 0;
-  private developer: DeveloperInterface;
-  private developerForm: FormGroup;
+  developerId = 0;
+  developer: DeveloperInterface;
+  developerForm: FormGroup;
+  load = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +29,7 @@ export class DeveloperEditorComponent implements OnInit {
     this.initForm();
     await this.loadDeveloper();
     this.patchDeveloperForm();
+    this.load = true;
 
   }
 
@@ -43,9 +45,22 @@ export class DeveloperEditorComponent implements OnInit {
 
   async loadDeveloper() {
 
-    this.developer = await this.developersService
-      .getDeveloper(this.developerId)
-      .toPromise();
+    try {
+
+      this.developer = await this.developersService
+        .getDeveloper(this.developerId)
+        .toPromise();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error load developer data. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
@@ -58,26 +73,43 @@ export class DeveloperEditorComponent implements OnInit {
 
   async saveDeveloper() {
 
+    if (this.developerForm.invalid) {
+      return;
+    }
+
     const data = {
       developerId: this.developerId,
       ...this.developerForm.value,
     };
 
-    await this.developersService
-      .updateDeveloper(data)
-      .toPromise();
+    try {
 
-    await this.loadDeveloper();
+      await this.developersService
+        .updateDeveloper(data)
+        .toPromise();
 
-    new Noty({
-      text: `developer "${data.name}" saved!`,
-      type: 'success',
-    })
-      .show();
+      await this.loadDeveloper();
+
+      new Noty({
+        text: `developer "${data.name}" saved!`,
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error saving developer. Details: ${error.message}`,
+        type: 'success',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
-  isInvalidFormControl(control: FormControl): Boolean {
+  isInvalidFormControl(control: AbstractControl): Boolean {
     return control.invalid && (control.dirty || control.touched);
   }
 

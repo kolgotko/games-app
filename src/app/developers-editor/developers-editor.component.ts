@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl, FormBuilder, FormGroup, Validators, AbstractControl
+} from '@angular/forms';
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import * as Noty from 'noty';
@@ -13,6 +15,7 @@ export class DevelopersEditorComponent implements OnInit {
 
   developers: DeveloperInterface[] = [];
   newDeveloperForm: FormGroup;
+  load = false;
 
   constructor(
     private developersService: DevelopersService,
@@ -23,6 +26,7 @@ export class DevelopersEditorComponent implements OnInit {
 
     this.initNewDeveloperForm();
     await this.loadDevelopers();
+    this.load = true;
 
   }
 
@@ -46,6 +50,14 @@ export class DevelopersEditorComponent implements OnInit {
 
   async createDeveloper() {
 
+    if (this.newDeveloperForm.invalid) {
+
+      Object.values(this.newDeveloperForm.controls)
+        .forEach(control => control.markAsTouched());
+
+      return;
+    }
+
     const name = this.newDeveloperForm.get('name').value;
 
     const data = {
@@ -53,18 +65,31 @@ export class DevelopersEditorComponent implements OnInit {
       name,
     };
 
-    await this.developersService
-      .createDeveloper(data)
-      .toPromise();
+    try {
 
-    await this.loadDevelopers();
-    this.newDeveloperForm.reset();
+      await this.developersService
+        .createDeveloper(data)
+        .toPromise();
 
-    new Noty({
-      text: `developer ${name} created!`,
-      type: 'success',
-    })
-      .show();
+      await this.loadDevelopers();
+      this.newDeveloperForm.reset();
+
+      new Noty({
+        text: `developer ${name} created!`,
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error create developer. Details: ${error.message}`,
+        type: 'success',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
@@ -84,7 +109,7 @@ export class DevelopersEditorComponent implements OnInit {
 
   }
 
-  isInvalidFormControl(control: FormControl): Boolean {
+  isInvalidFormControl(control: AbstractControl): Boolean {
     return control.invalid && (control.dirty || control.touched);
   }
 

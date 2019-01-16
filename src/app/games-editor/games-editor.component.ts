@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import {
+  FormBuilder, AbstractControl, FormGroup, FormControl, FormArray, Validators
+} from '@angular/forms';
 import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
@@ -23,6 +25,7 @@ export class GamesEditorComponent implements OnInit {
   publishers: PublisherInterface[] = [];
   genres: GenreInterface[] = [];
   newGameForm: FormGroup;
+  load = false;
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +44,8 @@ export class GamesEditorComponent implements OnInit {
     await this.loadGenres();
 
     this.patchGenres();
+
+    this.load = true;
 
   }
 
@@ -104,6 +109,17 @@ export class GamesEditorComponent implements OnInit {
 
   async createGame() {
 
+    if (this.newGameForm.invalid) {
+
+      Object.values(this.newGameForm.controls)
+        .forEach(control => {
+          control.markAsTouched();
+        });
+
+      return;
+
+    }
+
     const {
       name,
       description,
@@ -131,17 +147,31 @@ export class GamesEditorComponent implements OnInit {
       gameXrefGenre: gameXrefGenre,
     } as GameInterface;
 
-    await this.gamesService.createGame(data)
-      .toPromise();
+    try {
 
-    new Noty({
-      text: `game "${data.name}" created!`,
-      type: 'success',
-    })
-      .show();
+      await this.gamesService
+        .createGame(data)
+        .toPromise();
 
-    this.newGameForm.reset();
-    await this.loadGames();
+      new Noty({
+        text: `game "${data.name}" created!`,
+        type: 'success',
+      })
+        .show();
+
+      this.newGameForm.reset();
+      await this.loadGames();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error create game. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
@@ -160,7 +190,7 @@ export class GamesEditorComponent implements OnInit {
 
   }
 
-  isInvalidFormControl(control: FormControl): Boolean {
+  isInvalidFormControl(control: AbstractControl): Boolean {
     return control.invalid && (control.touched || control.dirty);
   }
 

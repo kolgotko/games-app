@@ -78,8 +78,9 @@ export class GenreEditorComponent implements OnInit {
     } catch (error) {
 
       new Noty({
-        text: error.message,
+        text: `Error update genre. Details: ${error.message}`,
         type: 'error',
+        timeout: false,
       })
         .show();
 
@@ -106,8 +107,9 @@ export class GenreEditorComponent implements OnInit {
     } catch (error) {
 
       new Noty({
-        text: error.message,
+        text: `Error delete genre. Details: ${error.message}`,
         type: 'error',
+        timeout: false,
       })
         .show();
 

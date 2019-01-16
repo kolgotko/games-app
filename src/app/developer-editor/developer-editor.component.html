@@ -1,12 +1,18 @@
-<form [formGroup]="developerForm" (ngSubmit)="saveDeveloper()">
-  <label>
-    name:
-    <ng-container *ngIf="isInvalidFormControl(developerFormName)">
-      <div class="error-message" *ngIf="developerFormName.errors.required">
-        name is required
-      </div>
-    </ng-container>
-    <input type="text" formControlName="name" />
-  </label>
-  <button [disabled]="developerForm.invalid">save</button>
-</form>
+<ng-container *ngIf="load; else preloader">
+  <form [formGroup]="developerForm" (ngSubmit)="saveDeveloper()">
+    <label>
+      name:
+      <ng-container *ngIf="isInvalidFormControl(developerFormName)">
+        <div class="error-message" *ngIf="developerFormName.errors.required">
+          name is required
+        </div>
+      </ng-container>
+      <input type="text" formControlName="name" />
+    </label>
+    <button class="submit-button"
+      [class.submit-button_disabled]="developerForm.invalid">save</button>
+  </form>
+</ng-container>
+<ng-template #preloader>
+  <div class="preloader">loading ...</div>
+</ng-template>

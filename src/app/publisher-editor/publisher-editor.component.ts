@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PublishersService } from '../publishers.service';
 import { PublisherInterface } from '../interfaces/publisher.interface';
 import * as Noty from 'noty';
@@ -15,6 +15,7 @@ export class PublisherEditorComponent implements OnInit {
   publisherId = 0;
   publisher: PublisherInterface;
   publisherForm: FormGroup;
+  load = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +29,7 @@ export class PublisherEditorComponent implements OnInit {
     this.initForm();
     await this.loadPublisher();
     this.patchPublisherForm();
+    this.load = true;
 
   }
 
@@ -48,34 +50,64 @@ export class PublisherEditorComponent implements OnInit {
 
   async loadPublisher() {
 
-    this.publisher = await this.publishersService
-      .getPublisher(this.publisherId)
-      .toPromise();
+    try {
+
+      this.publisher = await this.publishersService
+        .getPublisher(this.publisherId)
+        .toPromise();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error loading publisher. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
   async updatePublisher() {
+
+    if (this.publisherForm.invalid) {
+      return;
+    }
 
     const data = {
       publisherId: this.publisherId,
       ...this.publisherForm.value,
     };
 
-    await this.publishersService
-      .updatePublisher(data)
-      .toPromise();
+    try {
 
-    await this.loadPublisher();
+      await this.publishersService
+        .updatePublisher(data)
+        .toPromise();
 
-    new Noty({
-      text: `publisher "${data.name}" saved!`,
-      type: 'success',
-    })
-      .show();
+      await this.loadPublisher();
+
+      new Noty({
+        text: `publisher "${data.name}" saved!`,
+        type: 'success',
+      })
+        .show();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error save publisher. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
-  isInvalidFormControl(control: FormControl): Boolean {
+  isInvalidFormControl(control: AbstractControl): Boolean {
     return control.invalid && (control.dirty || control.touched);
   }
 

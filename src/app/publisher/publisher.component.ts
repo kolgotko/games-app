@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublishersService } from '../publishers.service';
 import { GameInterface } from '../interfaces/game.interface';
+import { PublisherInterface } from '../interfaces/publisher.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-publisher',
@@ -11,30 +13,47 @@ import { GameInterface } from '../interfaces/game.interface';
 export class PublisherComponent implements OnInit {
 
   publisherId = 0;
-  name = '';
+  publisher: PublisherInterface;
   games: GameInterface[] = [];
+  load = false;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
+    private router: Router,
     private publishersService: PublishersService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.publisherId = this.router.snapshot.params.id;
-    this.loadPublishers();
+    this.publisherId = this.route.snapshot.params.id;
+    await this.loadPublishers();
+    this.load = true;
 
   }
 
-  loadPublishers() {
+  async loadPublishers() {
 
-    this.publishersService.getPublisher(this.publisherId)
-      .subscribe(publisher => {
+    try {
 
-        this.name = publisher.name;
-        this.games = publisher.game;
+      this.publisher = await this.publishersService
+        .getPublisher(this.publisherId)
+        .toPromise();
 
-      });
+
+      this.games = this.publisher.game;
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error loading publisher. Please try later. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+      this.router.navigate(['/']);
+
+    }
 
   }
 

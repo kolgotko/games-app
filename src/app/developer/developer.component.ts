@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import { GameInterface } from '../interfaces/game.interface';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-developer',
@@ -12,26 +13,49 @@ import { GameInterface } from '../interfaces/game.interface';
 export class DeveloperComponent implements OnInit {
 
   developerId = 0;
+  developer: DeveloperInterface;
   title = '';
   games: GameInterface[] = [];
+  load = false;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
+    private router: Router,
     private developersService: DevelopersService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    const id = this.router.snapshot.params.id;
+    const id = this.route.snapshot.params.id;
     this.developerId = id;
 
-    this.developersService.getDeveloper(id)
-      .subscribe(developer => {
+    await this.loadDeveloper();
 
-        this.title = developer.name;
-        this.games = developer.game;
+    this.games = this.developer.game;
+    this.load = true;
 
-      });
+  }
+
+  async loadDeveloper() {
+
+    try {
+
+      this.developer = await this.developersService
+        .getDeveloper(this.developerId)
+        .toPromise();
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error load developer. Please try later. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+      this.router.navigate(['/']);
+
+    }
 
   }
 

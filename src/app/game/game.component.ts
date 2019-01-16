@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GamesService } from '../games.service';
 
 import { GameInterface } from '../interfaces/game.interface';
 import { GenreInterface } from '../interfaces/genre.interface';
 import { PublisherInterface } from '../interfaces/publisher.interface';
 import { DeveloperInterface } from '../interfaces/developer.interface';
+
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-game',
@@ -15,36 +17,48 @@ import { DeveloperInterface } from '../interfaces/developer.interface';
 export class GameComponent implements OnInit {
 
   gameId = 0;
-  title = '';
-  description = '';
-  developer: DeveloperInterface;
-  publisher: PublisherInterface;
-  genres: GenreInterface[] = [];
+  game: GameInterface;
+  gameGenres: GenreInterface[] = [];
+  load = false;
 
   constructor(
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
+    private router: Router,
     private gamesService: GamesService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.gameId = this.router.snapshot.params.id;
-    this.loadGame();
+    this.gameId = this.route.snapshot.params.id;
+    await this.loadGame();
 
   }
 
-  loadGame() {
+  async loadGame() {
 
-    this.gamesService.getGame(this.gameId)
-      .subscribe(game => {
+    try {
 
-        this.title = game.name;
-        this.description = game.description;
-        this.genres = game.gameXrefGenre.map(xref => xref.genre);
-        this.developer = game.developer;
-        this.publisher = game.publisher;
+      const game = await this.gamesService
+        .getGame(this.gameId)
+        .toPromise();
 
-      });
+      this.game = game;
+      this.gameGenres = game.gameXrefGenre.map(xref => xref.genre);
+
+      this.load = true;
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error loading game. Please try later. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+      this.router.navigate(['/']);
+
+    }
 
   }
 
