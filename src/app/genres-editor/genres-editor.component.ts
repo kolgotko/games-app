@@ -57,7 +57,7 @@ export class GenresEditorComponent implements OnInit {
 
   async createGenre() {
 
-    let data: GenreInterface = {
+    const data: GenreInterface = {
       genreId: 0,
       ...this.newGenreForm.value,
     };

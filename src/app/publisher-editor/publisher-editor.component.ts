@@ -12,7 +12,7 @@ import * as Noty from 'noty';
 })
 export class PublisherEditorComponent implements OnInit {
 
-  publisherId: number = 0;
+  publisherId = 0;
   publisher: PublisherInterface;
   publisherForm: FormGroup;
 
@@ -56,7 +56,7 @@ export class PublisherEditorComponent implements OnInit {
 
   async updatePublisher() {
 
-    let data = {
+    const data = {
       publisherId: this.publisherId,
       ...this.publisherForm.value,
     };

@@ -14,9 +14,9 @@ import { DeveloperInterface } from '../interfaces/developer.interface';
 })
 export class GameComponent implements OnInit {
 
-  gameId: number = 0;
-  title = "";
-  description = "";
+  gameId = 0;
+  title = '';
+  description = '';
   developer: DeveloperInterface;
   publisher: PublisherInterface;
   genres: GenreInterface[] = [];

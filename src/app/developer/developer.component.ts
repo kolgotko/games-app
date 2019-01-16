@@ -11,8 +11,8 @@ import { GameInterface } from '../interfaces/game.interface';
 })
 export class DeveloperComponent implements OnInit {
 
-  developerId: number = 0;
-  title: string = "";
+  developerId = 0;
+  title = '';
   games: GameInterface[] = [];
 
   constructor(
@@ -22,7 +22,7 @@ export class DeveloperComponent implements OnInit {
 
   ngOnInit() {
 
-    let id = this.router.snapshot.params.id;
+    const id = this.router.snapshot.params.id;
     this.developerId = id;
 
     this.developersService.getDeveloper(id)

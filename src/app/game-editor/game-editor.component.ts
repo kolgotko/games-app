@@ -26,7 +26,7 @@ enum Action {
 })
 export class GameEditorComponent implements OnInit {
 
-  gameId: number = 0;
+  gameId = 0;
   game: GameInterface;
   publishers: PublisherInterface[] = [];
   developers: DeveloperInterface[] = [];
@@ -109,14 +109,14 @@ export class GameEditorComponent implements OnInit {
 
     this.gameForm.patchValue(this.game);
 
-    let checkedGenres = this.game.gameXrefGenre
+    const checkedGenres = this.game.gameXrefGenre
       .map(data => data.genreId);
 
-    let genresFormControl = this.fb.array([]);
+    const genresFormControl = this.fb.array([]);
 
     this.genres.forEach(genre => {
 
-      let state = checkedGenres.includes(genre.genreId);
+      const state = checkedGenres.includes(genre.genreId);
       genresFormControl.push(this.fb.control(state));
 
     });
@@ -127,7 +127,7 @@ export class GameEditorComponent implements OnInit {
 
   async updateGame() {
 
-    let {
+    const {
       name,
       description,
       developerId,
@@ -135,7 +135,7 @@ export class GameEditorComponent implements OnInit {
       genres,
     } = this.gameForm.value;
 
-    let data = {
+    const data = {
       gameId: this.gameId,
       name,
       description,
@@ -147,9 +147,9 @@ export class GameEditorComponent implements OnInit {
       .updateGame(data)
       .toPromise();
 
-    let changesForGenres = this.getChangesForGenres();
+    const changesForGenres = this.getChangesForGenres();
 
-    let promises = changesForGenres
+    const promises = changesForGenres
       .filter(({ action }) => action !== Action.Skip)
       .map(({ action, genre }) => {
 
@@ -183,8 +183,8 @@ export class GameEditorComponent implements OnInit {
 
   private getChangesForGenres() {
 
-    let gameGenres = this.game.gameXrefGenre.map(data => data.genreId);
-    let genresForm = this.gameForm.value.genres;
+    const gameGenres = this.game.gameXrefGenre.map(data => data.genreId);
+    const genresForm = this.gameForm.value.genres;
 
     return this.genres.map((genre, i) => {
 

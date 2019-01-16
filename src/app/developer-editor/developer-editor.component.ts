@@ -12,7 +12,7 @@ import * as Noty from 'noty';
 })
 export class DeveloperEditorComponent implements OnInit {
 
-  private developerId: number = 0;
+  private developerId = 0;
   private developer: DeveloperInterface;
   private developerForm: FormGroup;
 
@@ -37,7 +37,7 @@ export class DeveloperEditorComponent implements OnInit {
       name: ['', [
         Validators.required,
       ]],
-    })
+    });
 
   }
 
@@ -58,7 +58,7 @@ export class DeveloperEditorComponent implements OnInit {
 
   async saveDeveloper() {
 
-    let data = {
+    const data = {
       developerId: this.developerId,
       ...this.developerForm.value,
     };

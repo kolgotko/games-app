@@ -46,9 +46,9 @@ export class DevelopersEditorComponent implements OnInit {
 
   async createDeveloper() {
 
-    let name = this.newDeveloperForm.get('name').value;
+    const name = this.newDeveloperForm.get('name').value;
 
-    let data = {
+    const data = {
       developerId: 0,
       name,
     };

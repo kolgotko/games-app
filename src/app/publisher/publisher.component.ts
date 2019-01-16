@@ -10,8 +10,8 @@ import { GameInterface } from '../interfaces/game.interface';
 })
 export class PublisherComponent implements OnInit {
 
-  publisherId: number = 0;
-  name: string = '';
+  publisherId = 0;
+  name = '';
   games: GameInterface[] = [];
 
   constructor(

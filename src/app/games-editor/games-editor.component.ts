@@ -58,7 +58,7 @@ export class GamesEditorComponent implements OnInit {
 
   patchGenres() {
 
-    let genresFormControl = this.fb.array([]);
+    const genresFormControl = this.fb.array([]);
 
     this.genres.forEach(genre => {
 
@@ -104,7 +104,7 @@ export class GamesEditorComponent implements OnInit {
 
   async createGame() {
 
-    let {
+    const {
       name,
       description,
       developerId,
@@ -112,9 +112,9 @@ export class GamesEditorComponent implements OnInit {
       genres,
     } = this.newGameForm.value;
 
-    let checkedGenres = this.genres.filter((genre, index) => genres[index]);
+    const checkedGenres = this.genres.filter((genre, index) => genres[index]);
 
-    let gameXrefGenre = checkedGenres.map(genre => {
+    const gameXrefGenre = checkedGenres.map(genre => {
 
       return {
         genreId: genre.genreId,
@@ -122,7 +122,7 @@ export class GamesEditorComponent implements OnInit {
 
     });
 
-    let data = {
+    const data = {
       gameId: 0,
       name,
       description,

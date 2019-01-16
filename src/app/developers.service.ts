@@ -1,6 +1,6 @@
 import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { DeveloperInterface } from './interfaces/developer.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

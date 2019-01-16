@@ -62,7 +62,7 @@ export class PublishersEditorComponent implements OnInit {
 
   async createPublisher() {
 
-    let data = {
+    const data = {
       publisherId: 0,
       ...this.newPublisherForm.value,
     } as PublisherInterface;

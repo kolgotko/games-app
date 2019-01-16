@@ -54,7 +54,7 @@ export class GenreEditorComponent implements OnInit {
 
   async commitEditorChanges() {
 
-    let data = {
+    const data = {
       genreId: this.genre.genreId,
       name: this.control.value,
     };
