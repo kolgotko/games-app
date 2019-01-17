@@ -55,7 +55,7 @@ export class GenreEditorComponent implements OnInit {
 
   async commitEditorChanges() {
 
-    if (this.control.invalid) return;
+    if (this.control.invalid) { return; }
 
     const data = {
       genreId: this.genre.genreId,

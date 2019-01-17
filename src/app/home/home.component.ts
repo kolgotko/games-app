@@ -83,9 +83,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy() {
 
-    if (this.gamesSlider) this.gamesSlider.destroy();
-    if (this.developersSlider) this.developersSlider.destroy();
-    if (this.publishersSlider) this.publishersSlider.destroy();
+    if (this.gamesSlider) { this.gamesSlider.destroy(); }
+    if (this.developersSlider) { this.developersSlider.destroy(); }
+    if (this.publishersSlider) { this.publishersSlider.destroy(); }
 
   }
 
