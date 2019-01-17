@@ -6,6 +6,7 @@ import { GameInterface } from '../interfaces/game.interface';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import { PublisherInterface } from '../interfaces/publisher.interface';
 import Swiper from 'swiper';
+import * as Noty from 'noty';
 
 @Component({
   selector: 'app-home',
@@ -32,20 +33,32 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   async ngOnInit() {
 
-    console.log('ngOnInit');
-    this.allGames = await this.gamesService
-      .getAllGames()
-      .toPromise();
+    try {
 
-    this.allDevelopers = await this.developersService
-      .getAllDevelopers()
-      .toPromise();
+      this.allGames = await this.gamesService
+        .getAllGames()
+        .toPromise();
 
-    this.allPublishers = await this.publishersService
-      .getAllPublishers()
-      .toPromise();
+      this.allDevelopers = await this.developersService
+        .getAllDevelopers()
+        .toPromise();
 
-    this.load = true;
+      this.allPublishers = await this.publishersService
+        .getAllPublishers()
+        .toPromise();
+
+      this.load = true;
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error loading data. Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+    }
 
   }
 
