@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { GenresService } from '../genres.service';
 import { GenreInterface } from '../interfaces/genre.interface';
 import * as Noty from 'noty';
@@ -24,7 +24,8 @@ export class GenreEditorComponent implements OnInit {
 
   ngOnInit() {
 
-    this.control = this.fb.control(this.genre.name);
+    this.control = this.fb
+      .control(this.genre.name, Validators.required);
 
   }
 
@@ -53,6 +54,8 @@ export class GenreEditorComponent implements OnInit {
   }
 
   async commitEditorChanges() {
+
+    if (this.control.invalid) return;
 
     const data = {
       genreId: this.genre.genreId,

@@ -1,11 +1,12 @@
 <h2 class="title">Existing publishers</h2>
 <ng-container *ngIf="load; else preloader">
-  <ul class="publishers-list">
-    <li class="publisher-item" *ngFor="let publisher of publishers">
-      <div class="publisher-item__title"> {{ publisher.name }} </div>
-      <a class="publisher-item__editor-link"
+  <ul class="publishers-list items-list">
+    <li class="publisher-item items-list__item item-base" *ngFor="let publisher of publishers">
+      <div class="publisher-item__title item-base__title"> {{ publisher.name }} </div>
+      <a class="text-button text-button_primary item-base__inline-item"
         routerLink="/editor/publishers/{{ publisher.publisherId }}">edit</a>
-      <button *ngIf="!confirm.showing" (click)="confirm.toggle()">delete</button>
+      <button class="button button_secondary item-base__inline-item"
+        *ngIf="!confirm.showing" (click)="confirm.toggle()">delete</button>
       <app-confirmation-dialog
         (yes)="deletePublisher(publisher.publisherId)" #confirm></app-confirmation-dialog>
     </li>
@@ -14,15 +15,20 @@
 <ng-template #preloader>
   <div class="preloader">loading ...</div>
 </ng-template>
-<h2 class="title">New publisher</h2>
-<form [formGroup]="newPublisherForm" (ngSubmit)="createPublisher()">
-  name:
-  <ng-container *ngIf="isInvalidFormControl(newPublisherFormName)">
-    <div class="error-message" *ngIf="newPublisherFormName.errors.required">
-      name is required
-    </div>
-  </ng-container>
-  <input type="text" formControlName="name" />
-  <button class="submit-button"
-    [class.submit-button_disabled]="newPublisherForm.invalid">create</button>
+<form class="form" [formGroup]="newPublisherForm" (ngSubmit)="createPublisher()">
+  <div class="form__title form__row">New publisher</div>
+  <label class="input-base form__row"
+    [class.input-base_invalid]="isInvalidFormControl(newPublisherFormName)">
+    <div class="input-base__label input-base__label_required">Name</div>
+    <ng-container *ngIf="isInvalidFormControl(newPublisherFormName)">
+      <div class="input-base__message" *ngIf="newPublisherFormName.errors.required">
+        name is required
+      </div>
+    </ng-container>
+    <input class="input-base__input" type="text" formControlName="name" />
+  </label>
+  <button class="button form__row"
+    [class.button_disabled]="newPublisherForm.invalid"
+    [class.button_primary]="newPublisherForm.valid" >create</button>
 </form>
+

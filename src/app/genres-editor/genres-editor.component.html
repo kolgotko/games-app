@@ -1,18 +1,24 @@
 <ng-container *ngIf="load; else preloader">
   <h2 class="title">Existing genres</h2>
-  <ul class="genres-list">
-    <li class="genre-item" *ngFor="let genre of genres">
-      <app-genre-editor [genre]="genre" (del)="loadGenres()"></app-genre-editor>
-    </li>
-  </ul>
-  <h2 class="title">New genre</h2>
-  <form [formGroup]="newGenreForm" (ngSubmit)="createGenre()">
-    <ng-container *ngIf="newGenreForm.invalid && (newGenreForm.touched || newGenreForm.dirty)">
-      <div class="error-message" *ngIf="newGenreFormName.errors.required"> name is required </div>
-    </ng-container>
-    name: <input type="text" formControlName="name" />
-    <button class="submit-button"
-      [class.submit-button_disabled]="newGenreForm.invalid">create</button>
+  <div class="items-list">
+    <app-genre-editor class="items-list__item"
+      *ngFor="let genre of genres"
+      [genre]="genre" (del)="loadGenres()"></app-genre-editor>
+  </div>
+  <form class="form" [formGroup]="newGenreForm" (ngSubmit)="createGenre()">
+    <h2 class="form__title form__row">New genre</h2>
+    <label class="input-base form__row"
+      [class.input-base_invalid]="isInvalidFormControl(newGenreFormName)">
+      <div class="input-base__label input-base__label_required">Name</div>
+      <ng-container *ngIf="isInvalidFormControl(newGenreFormName)">
+        <div class="input-base__message"
+          *ngIf="newGenreFormName.errors.required"> name is required </div>
+      </ng-container>
+      <input class="input-base__input" type="text" formControlName="name" />
+    </label>
+    <button class="button form__row"
+      [class.button_disabled]="newGenreForm.invalid"
+      [class.button_primary]="newGenreForm.valid" >create</button>
   </form>
 </ng-container>
 <ng-template #preloader>

@@ -1,0 +1,56 @@
+.item-base {
+
+  width: 335px;
+  min-height: 100px;
+  display: block;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: $box-shadow;
+  color: $color-black;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+  background-color: #fff;
+  padding: 10px;
+
+  &__title {
+    font-size: 1.125em;
+    font-weight: bold;
+    margin: 10px 0px;
+  }
+
+  &__label {
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  &__inline-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__tag-line {
+
+    line-height: 2rem;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+
+  }
+
+  &__row {
+    display: block;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__tag:not(:last-child) {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+}

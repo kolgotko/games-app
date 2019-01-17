@@ -1,3 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~noty/src/noty.scss";
 @import "~noty/src/themes/sunset.scss";
+
+@import "./styles/vars";
+@import "./styles/slider-items";
+@import "./styles/title";
+@import "./styles/body";
+@import "./styles/game-item";
+@import "./styles/genre-item";
+@import "./styles/button";
+@import "./styles/text-button";
+@import "./styles/item-base";
+@import "./styles/items-list";
+@import "./styles/preloader";
+@import "./styles/input-base";
+@import "./styles/select";
+@import "./styles/form";
+@import "./styles/details";
+@import "./styles/position";
+@import "./styles/link";
+@import "./styles/tag";
+@import "./styles/confirmation-dialog";
+

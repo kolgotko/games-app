@@ -1,0 +1,25 @@
+.confirmation-dialog {
+
+  display: block;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+
+  &__message {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  &__yes-button {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__no-button{
+    display: inline-block;
+    margin-right: 0px;
+    margin-bottom: 10px;
+  }
+
+}

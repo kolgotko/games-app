@@ -1,0 +1,11 @@
+<div class="item-base game-item">
+  <h3 class="item-base__title game-item__name"> {{ game.name }} </h3>
+  <div class="item-base__label">genres:</div>
+  <div class="game-item__genres">
+    <app-genre-item class="game-item__genre"
+      [genre]="xref.genre" *ngFor="let xref of game.gameXrefGenre"></app-genre-item>
+  </div>
+  <a class="item-base__inline-item text-button text-button_primary"
+     routerLink="/games/{{ game.gameId }}"> more </a>
+</div>
+

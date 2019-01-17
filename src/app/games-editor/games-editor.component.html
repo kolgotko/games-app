@@ -1,63 +1,82 @@
 <ng-container *ngIf="load; else preloader">
   <h2 class="title">Existing games</h2>
-  <ul class="games-list">
-    <li class="game-item" *ngFor="let game of games">
-      <div class="game-item__name">{{ game.name }}</div>
-      <ul class="genres-list">
-        <li class="genre" *ngFor="let xref of game.gameXrefGenre">
-          {{ xref.genre.name }}
-        </li>
-      </ul>
-      <a class="game-item__editor-link"
+  <ul class="items-list">
+    <li class="item-base game-item items-list__item" *ngFor="let game of games">
+      <div class="item-base__title game-item__name">{{ game.name }}</div>
+      <div class="item-base__label">genres:</div>
+      <div class="genres game-item__genres">
+        <app-genre-item class="game-item__genre"
+          [genre]="xref.genre" *ngFor="let xref of game.gameXrefGenre"></app-genre-item>
+      </div>
+      <a class="item-base__inline-item text-button text-button_primary"
         routerLink="/editor/games/{{ game.gameId }}">edit</a>
-      <button class="game-item__delete-button" *ngIf="!confirm.showing"
+      <button class="item-base__inline-item button button_secondary" *ngIf="!confirm.showing"
         (click)="confirm.toggle()">delete</button>
       <app-confirmation-dialog (yes)="deleteGame(game.gameId)" #confirm></app-confirmation-dialog>
     </li>
   </ul>
 
-  <h2 class="title">New game</h2>
-  <form [formGroup]="newGameForm" (ngSubmit)="createGame()">
-    name:
-    <ng-container *ngIf="isInvalidFormControl(newGameFormName)">
-      <div class="error-message" *ngIf="newGameFormName.errors.required">
-        name is required
-      </div>
-    </ng-container>
-    <input type="text" formControlName="name" /><br/>
-    description:<br/>
-    <textarea formControlName="description"></textarea>
+  <form class="form" [formGroup]="newGameForm" (ngSubmit)="createGame()">
+    <h2 class="form__title form__row"> New game </h2>
+    <label class="input-base form__row" [class.input-base_invalid]="isInvalidFormControl(newGameFormName)">
+      <div class="input-base__label input-base__label_required">Name</div>
+      <ng-container *ngIf="isInvalidFormControl(newGameFormName)">
+        <div class="input-base__message" *ngIf="newGameFormName.errors.required">
+          name is required
+        </div>
+      </ng-container>
+      <input class="input-base__input" type="text" formControlName="name" /><br/>
+    </label>
     <br/>
-    developer:
-    <ng-container *ngIf="isInvalidFormControl(newGameFormDeveloperId)">
-      <div class="error-message" *ngIf="newGameFormDeveloperId.errors.required">
-        developer is required
-      </div>
-    </ng-container>
-    <select formControlName="developerId">
-      <option value=""></option>
-      <option *ngFor="let developer of developers"
-        [value]="developer.developerId">{{ developer.name }}</option>
-    </select>
+    <label class="input-base form__row">
+      <div class="input-base__label">Description</div>
+      <textarea class="input-base__input" formControlName="description"></textarea>
+    </label>
     <br/>
-    publisher:
-    <select formControlName="publisherId">
-      <option value=""></option>
-      <option *ngFor="let publisher of publishers"
-        [value]="publisher.publisherId">{{ publisher.name }}</option>
-    </select>
+    <label class="input-base select form__row"
+      [class.input-base_invalid]="isInvalidFormControl(newGameFormDeveloperId)">
+      <div class="input-base__label input-base__label_required">Developer</div>
+      <ng-container *ngIf="isInvalidFormControl(newGameFormDeveloperId)">
+        <div class="input-base__message" *ngIf="newGameFormDeveloperId.errors.required">
+          developer is required
+        </div>
+      </ng-container>
+      <select class="input-base__input select__input" formControlName="developerId">
+        <option value=""></option>
+        <option *ngFor="let developer of developers"
+          [value]="developer.developerId">{{ developer.name }}</option>
+      </select>
+    </label>
     <br/>
-    genres: <a class="editor-link" routerLink="/editor/genres">genres editor</a>
+    <div class="input-base select form__row">
+      <div class="input-base__label">Publisher</div>
+      <select class="input-base__input select__input" formControlName="publisherId">
+        <option value=""></option>
+        <option *ngFor="let publisher of publishers"
+          [value]="publisher.publisherId">{{ publisher.name }}</option>
+      </select>
+    </div>
     <br/>
-    <ng-container *ngFor="let control of newGameFormGenres.controls; let i=index">
-      <label formArrayName="genres">
-        <input type="checkbox" [formControlName]="i" />
-        {{ genres[i].name }}
-      </label>
+    <div class="form__row">
+      <span class="form__label"> genres: </span>
+      <a class="editor-link text-button text-button_primary"
+         routerLink="/editor/genres">genres editor</a>
       <br/>
-    </ng-container>
-    <button class="submit-button"
-      [class.submit-button_disabled]="newGameForm.invalid">create</button>
+    </div>
+    <div class="form__row">
+
+      <ng-container *ngFor="let control of newGameFormGenres.controls; let i=index">
+        <label formArrayName="genres">
+          <input type="checkbox" [formControlName]="i" />
+          {{ genres[i].name }}
+        </label>
+        <br/>
+      </ng-container>
+
+    </div>
+    <button class="button form__row"
+      [class.button_disabled]="newGameForm.invalid"
+      [class.button_primary]="newGameForm.valid" >create</button>
   </form>
 </ng-container>
 <ng-template #preloader>

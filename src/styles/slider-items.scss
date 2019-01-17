@@ -1,0 +1,33 @@
+.slider-items {
+
+  display: flex;
+  overflow: hidden;
+  padding: 20px 0px;
+
+  &__item {
+
+    display: flex;
+    flex-shrink: 0;
+
+  }
+
+  &__wrapper {
+
+    display: inline-flex;
+    width: auto;
+
+  }
+
+  &__spacer {
+
+    display: flex;
+
+    &:not(:last-child) {
+
+      margin-right: 20px;
+
+    }
+
+  }
+
+}

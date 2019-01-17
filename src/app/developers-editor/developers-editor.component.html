@@ -1,11 +1,11 @@
 <h2 class="title">Existing developers</h2>
 <ng-container *ngIf="load; else preloader">
-  <ul class="developers">
-    <li class="developer" *ngFor="let developer of developers">
-      <div class="developer__name">{{ developer.name }}</div>
-      <a class="developer__edit-link"
+  <ul class="developers items-list">
+    <li class="item-base developer items-list__item" *ngFor="let developer of developers">
+      <div class="developer__name item-base__title">{{ developer.name }}</div>
+      <a class="text-button text-button_primary item-base__inline-item"
         routerLink="/editor/developers/{{ developer.developerId }}">edit</a>
-      <button class="developer__delete-button"
+      <button class="button button_secondary item-base__inline-item"
         *ngIf="!confirm.showing"
         (click)="confirm.toggle()">delete</button>
       <app-confirmation-dialog
@@ -16,15 +16,19 @@
 <ng-template #preloader>
   <div class="preloader">loading ...</div>
 </ng-template>
-<h2 class="title">New developer</h2>
-<form [formGroup]="newDeveloperForm" (ngSubmit)="createDeveloper()">
-  name:
-  <ng-container class="errors" *ngIf="isInvalidFormControl(newDeveloperFormName)">
-    <div class="errors__message" *ngIf="newDeveloperFormName.errors.required">
-      name is required
-    </div>
-  </ng-container>
-  <input type="text" formControlName="name" />
-  <button class="submit-button"
-    [class.submit-button_disabled]="newDeveloperForm.invalid">create</button>
+<form class="form" [formGroup]="newDeveloperForm" (ngSubmit)="createDeveloper()">
+  <h2 class="form__rirle">New developer</h2>
+  <label class="input-base form__row"
+    [class.input-base_invalid]="isInvalidFormControl(newDeveloperFormName)">
+    <div class="input-base__label input-base__label_required">Name</div>
+    <ng-container class="errors" *ngIf="isInvalidFormControl(newDeveloperFormName)">
+      <div class="input-base__message" *ngIf="newDeveloperFormName.errors.required">
+        name is required
+      </div>
+    </ng-container>
+    <input class="input-base__input" type="text" formControlName="name" />
+  </label>
+  <button class="button form__row"
+    [class.button_disabled]="newDeveloperForm.invalid"
+    [class.button_primary]="newDeveloperForm.valid" >create</button>
 </form>

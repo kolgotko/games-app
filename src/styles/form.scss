@@ -1,0 +1,32 @@
+.form {
+
+  display: block;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+  box-shadow: $box-shadow;
+
+  &__title {
+
+    font-size: 1.5rem;
+    color: $color-black;
+
+  }
+
+  &__label {
+
+    font-size: 1rem;
+    font-weight: bold;
+    color: $color-black;
+
+  }
+
+  &__row {
+
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+
+  }
+
+}

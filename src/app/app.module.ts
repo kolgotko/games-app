@@ -20,6 +20,8 @@ import { GameEditorComponent } from './game-editor/game-editor.component';
 import { GenreEditorComponent } from './genre-editor/genre-editor.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { httpInterceptorProviders } from './http-interceptors';
+import { GameItemComponent } from './game-item/game-item.component';
+import { GenreItemComponent } from './genre-item/genre-item.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { httpInterceptorProviders } from './http-interceptors';
     GameEditorComponent,
     GenreEditorComponent,
     ConfirmationDialogComponent,
+    GameItemComponent,
+    GenreItemComponent,
   ],
   imports: [
     BrowserModule,

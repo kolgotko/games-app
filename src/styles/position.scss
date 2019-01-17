@@ -1,0 +1,21 @@
+.position {
+
+  display: flex;
+
+  &_x_center {
+    justify-content: center;
+  }
+
+  &_x_end {
+    justify-content: flex-end;
+  }
+
+  &_x_start {
+    justify-content: flex-start;
+  }
+
+  &_y_center {
+    align-items: center;
+  }
+
+}

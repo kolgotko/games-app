@@ -1,16 +1,19 @@
 <ng-container *ngIf="load; else preloader">
-  <form [formGroup]="developerForm" (ngSubmit)="saveDeveloper()">
-    <label>
-      name:
+  <form class="form" [formGroup]="developerForm" (ngSubmit)="saveDeveloper()">
+    <div class="form__title form__row">Developer editor</div>
+    <label class="form__row input-base"
+      [class.input-base_invalid]="isInvalidFormControl(developerFormName)">
+      <div class="input-base__label input-base__label_required">Name</div>
       <ng-container *ngIf="isInvalidFormControl(developerFormName)">
-        <div class="error-message" *ngIf="developerFormName.errors.required">
+        <div class="input-base__message" *ngIf="developerFormName.errors.required">
           name is required
         </div>
       </ng-container>
-      <input type="text" formControlName="name" />
+      <input class="input-base__input" type="text" formControlName="name" />
     </label>
-    <button class="submit-button"
-      [class.submit-button_disabled]="developerForm.invalid">save</button>
+    <button class="form__row button"
+      [class.button_disabled]="developerForm.invalid"
+      [class.button_primary]="developerForm.valid" >save</button>
   </form>
 </ng-container>
 <ng-template #preloader>

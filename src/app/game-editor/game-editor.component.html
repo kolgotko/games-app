@@ -1,39 +1,58 @@
 <ng-container *ngIf="load; else preloader">
-  <form [formGroup]="gameForm" (ngSubmit)="updateGameAndGenres()">
-    name:
-    <ng-container *ngIf="isInvalidFormControl(gameFormName)">
-      <div class="error-message" *ngIf="gameFormName.errors.required">name is required</div>
-    </ng-container>
-    <input type="text" formControlName="name" /><br/>
-    description:<br/>
-    <textarea formControlName="description"></textarea><br/>
-    developer:
-    <ng-container *ngIf="isInvalidFormControl(gameFormDeveloperId)">
-      <div class="error-message" *ngIf="gameFormDeveloperId.errors.required">developer is required</div>
-    </ng-container>
-    <select formControlName="developerId">
-      <option value="" selected></option>
-      <option [value]="developer.developerId"
-        *ngFor="let developer of developers">{{ developer.name }}</option>
-    </select>
-    <br/>
-    publisher:
-    <select formControlName="publisherId">
-      <option value="" selected></option>
-      <option [value]="publisher.publisherId"
-        *ngFor="let publisher of publishers">{{ publisher.name }}</option>
-    </select>
-    <br/>
-    genres: <a class="editor-link" routerLink="/editor/genres">genres editor</a>
-    <br/>
-    <ng-container *ngFor="let genreControl of gameFormGenres.controls; let i=index">
-      <label formArrayName="genres">
-        <input type="checkbox" [formControlName]="i" />
-        {{ genres[i].name }}
-      </label>
-      <br/>
-    </ng-container>
-    <button class="submit-button" [class.submit-button_disabled]="gameForm.invalid" >save</button>
+  <form class="form" [formGroup]="gameForm" (ngSubmit)="updateGameAndGenres()">
+    <div class="input-base form__row"
+      [class.input-base_invalid]="isInvalidFormControl(gameFormName)">
+      <div class="input-base__label input-base__label_required">Name</div>
+      <ng-container *ngIf="isInvalidFormControl(gameFormName)">
+        <div class="input-base__message"
+          *ngIf="gameFormName.errors.required">name is required</div>
+      </ng-container>
+      <input class="input-base__input" type="text" formControlName="name" /><br/>
+    </div>
+
+    <div class="input-base form__row">
+      <div class="input-base__label">Description</div>
+      <textarea class="input-base__input" formControlName="description"></textarea>
+    </div>
+
+    <div class="input-base select form__row"
+      [class.input-base_invalid]="isInvalidFormControl(gameFormDeveloperId)">
+      <div class="input-base__label input-base__label_required">Developer</div>
+      <ng-container *ngIf="isInvalidFormControl(gameFormDeveloperId)">
+        <div class="input-base__message"
+          *ngIf="gameFormDeveloperId.errors.required">developer is required</div>
+      </ng-container>
+      <select class="input-base__input select__input" formControlName="developerId">
+        <option value="" selected></option>
+        <option [value]="developer.developerId"
+          *ngFor="let developer of developers">{{ developer.name }}</option>
+      </select>
+    </div>
+
+    <div class="input-base select form__row">
+      <div class="input-base__label input-base__label_required">Publisher</div>
+      <select class="input-base__input select__input" formControlName="publisherId">
+        <option value="" selected></option>
+        <option [value]="publisher.publisherId"
+          *ngFor="let publisher of publishers">{{ publisher.name }}</option>
+      </select>
+    </div>
+    <div class="form__row">
+      <span class="form__label">genres:</span>
+      <a class="text-button text-button_primary" routerLink="/editor/genres">genres editor</a>
+    </div>
+    <div class="form__row">
+      <ng-container *ngFor="let genreControl of gameFormGenres.controls; let i=index">
+        <label formArrayName="genres">
+          <input type="checkbox" [formControlName]="i" />
+          {{ genres[i].name }}
+        </label>
+        <br/>
+      </ng-container>
+    </div>
+    <button class="button form__row"
+      [class.button_disabled]="gameForm.invalid"
+      [class.button_primary]="gameForm.valid" >save</button>
   </form>
 </ng-container>
 <ng-template #preloader>

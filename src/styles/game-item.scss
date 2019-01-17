@@ -1,0 +1,22 @@
+.game-item {
+
+  &__genres {
+    line-height: 2rem;
+    padding-left: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  &__genre {
+
+    line-height: 1rem;
+
+    &:not(:last-child) {
+
+      margin-right: 5px;
+      margin-bottom: 5px;
+
+    }
+  }
+
+}

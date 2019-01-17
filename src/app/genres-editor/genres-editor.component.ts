@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { GenresService } from '../genres.service';
 import { GenreInterface } from '../interfaces/genre.interface';
 import * as Noty from 'noty';
@@ -99,6 +99,10 @@ export class GenresEditorComponent implements OnInit {
 
     }
 
+  }
+
+  isInvalidFormControl(control: AbstractControl): Boolean {
+    return control.invalid && (control.touched || control.dirty);
   }
 
   get newGenreFormName() { return this.newGenreForm.get('name') as FormControl; }

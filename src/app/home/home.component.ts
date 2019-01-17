@@ -1,7 +1,10 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, EventEmitter } from '@angular/core';
 import { GamesService } from '../games.service';
 import { DevelopersService } from '../developers.service';
 import { PublishersService } from '../publishers.service';
+import { GameInterface } from '../interfaces/game.interface';
+import { DeveloperInterface } from '../interfaces/developer.interface';
+import { PublisherInterface } from '../interfaces/publisher.interface';
 import Swiper from 'swiper';
 
 @Component({
@@ -9,15 +12,17 @@ import Swiper from 'swiper';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewChecked {
 
-  allGames;
-  allDevelopers;
-  allPublishers;
+  allGames: GameInterface[];
+  allDevelopers: DeveloperInterface[];
+  allPublishers: PublisherInterface[];
 
   gamesSlider: Swiper;
   developersSlider: Swiper;
   publishersSlider: Swiper;
+
+  load = false;
 
   constructor(
     private gamesService: GamesService,
@@ -27,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async ngOnInit() {
 
+    console.log('ngOnInit');
     this.allGames = await this.gamesService
       .getAllGames()
       .toPromise();
@@ -39,21 +45,47 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .getAllPublishers()
       .toPromise();
 
+    this.load = true;
+
   }
 
-  ngAfterViewInit() {
+  ngAfterViewChecked() {
 
-    this.gamesSlider = new Swiper('.games-slider', {});
-    this.developersSlider = new Swiper('.developers-slider', {});
-    this.publishersSlider = new Swiper('.publishers-slider', {});
+    if (this.load && !this.gamesSlider) {
+
+      this.gamesSlider = new Swiper('.games-slider', {
+        slidesPerView: 'auto',
+        mousewheel: true,
+        freeMode: true,
+      });
+
+    }
+
+    if (this.load && !this.developersSlider) {
+      this.developersSlider = new Swiper('.developers-slider', {
+        slidesPerView: 'auto',
+        mousewheel: true,
+        freeMode: true,
+      });
+    }
+
+    if (this.load && !this.publishersSlider) {
+
+      this.publishersSlider = new Swiper('.publishers-slider', {
+        slidesPerView: 'auto',
+        mousewheel: true,
+        freeMode: true,
+      });
+
+    }
 
   }
 
   ngOnDestroy() {
 
-    this.gamesSlider.destroy();
-    this.developersSlider.destroy();
-    this.publishersSlider.destroy();
+    if (this.gamesSlider) this.gamesSlider.destroy();
+    if (this.developersSlider) this.developersSlider.destroy();
+    if (this.publishersSlider) this.publishersSlider.destroy();
 
   }
 

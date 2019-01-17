@@ -1,21 +1,43 @@
 <ng-container *ngIf="load; else preloader">
-  <div class="name"> name: {{ game.name }} </div>
-  <div class="description"> description: {{ game.description }} </div>
-  genres:
-  <ul class="genres">
-    <li class="genre" *ngFor="let genre of gameGenres"> {{ genre.name }} </li>
-  </ul>
-  <a class="game-editor-link" routerLink="/editor/games/{{ gameId }}"> edit </a>
-  <br/>
-  developer:
-  <a class="developer"
-    routerLink="/developers/{{ game.developer.developerId }}"
-    *ngIf="game.developer"> {{ game.developer.name }} </a>
-  <br/>
-  publisher:
-  <a class="publisher"
-    routerLink="/publishers/{{ game.publisher.publisherId }}"
-    *ngIf="game.publisher"> {{ game.publisher.name }} </a>
+  <div class="body__screen body__item body__item_x_center body__item_y_center">
+    <div class="item-base details">
+
+      <h1 class="item-base__row item-base__title">Game details</h1>
+      <div class="item-base__row">
+        <div class="item-base__label">Name:</div> {{ game.name }}
+      </div>
+      <div class="item-base__row">
+        <div class="item-base__label">Description:</div> {{ game.description }}
+      </div>
+
+      <div class="item-base__row">
+        <div class="item-base__label">Genres:</div>
+        <div class="item-base__tag-line">
+          <app-genre-item class="item-base__tag"
+            [genre]="genre" *ngFor="let genre of gameGenres"></app-genre-item>
+        </div>
+      </div>
+      <br/>
+      <div class="item-base__row" *ngIf="game.developer">
+        <div class="item-base__label">Developer:&nbsp;</div>
+        <a routerLink="/developers/{{ game.developer.developerId }}"
+          class="link" >{{ game.developer.name }}</a>
+      </div>
+      <div class="item-base__row" *ngIf="game.publisher">
+        <div class="item-base__label">Publisher:&nbsp;</div>
+        <a routerLink="/publishers/{{ game.publisher.publisherId }}"
+           class="link" >{{ game.publisher.name }}</a>
+      </div>
+
+      <div class="item-base__row">
+        <div class="body__item body__item_x_end">
+          <a class="button button_primary"
+             routerLink="/editor/games/{{ gameId }}"> edit </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </ng-container>
 <ng-template #preloader>
   <div class="preloader">loading ...</div>

@@ -1,13 +1,27 @@
-<ng-container *ngIf="show">
-  <input type="text" [formControl]="control" />
-  <button (click)="commitEditorChanges();">save</button>
-  <button (click)="hideEditor()">cancel</button>
-</ng-container>
-<ng-container *ngIf="!show">
-  <span class="genre-item__title"> {{ genre.name }} </span>
-  <button (click)="showEditor()">edit</button>
-  <button class="genre-item__delete-button"
-    *ngIf="!confirm.showing"
-    (click)="confirm.toggle()">delete</button>
-  <app-confirmation-dialog (yes)="deleteGenre()" #confirm></app-confirmation-dialog>
-</ng-container>
+<div class="item-base">
+  <ng-container *ngIf="show">
+    <div class="input-base" [class.input-base_invalid]="control.invalid">
+      <ng-container *ngIf="control.invalid">
+        <div class="input-base__message"
+          *ngIf="control.errors.required"> name is required </div>
+      </ng-container>
+      <input class="input-base__input" type="text" [formControl]="control" />
+    </div>
+    <br/>
+    <br/>
+    <button class="button item-base__inline-item"
+      (click)="commitEditorChanges();"
+      [class.button_disabled]="control.invalid"
+      [class.button_primary]="control.valid" >save</button>
+    <button class="button button_secondary item-base__inline-item"
+      (click)="hideEditor()">cancel</button>
+  </ng-container>
+  <ng-container *ngIf="!show">
+    <div class="item-base__title"> {{ genre.name }} </div>
+    <button class="text-button text-button_primary item-base__inline-item" (click)="showEditor()">edit</button>
+    <button class="button button_secondary item-base__inline-item"
+      *ngIf="!confirm.showing"
+      (click)="confirm.toggle()">delete</button>
+    <app-confirmation-dialog (yes)="deleteGenre()" #confirm></app-confirmation-dialog>
+  </ng-container>
+</div>

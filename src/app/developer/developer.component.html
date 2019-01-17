@@ -1,15 +1,34 @@
 <ng-container *ngIf="load; else preloader">
-  name: <div class="name"> {{ developer.name }} </div>
-  <a class="editor-link" routerLink="/editor/developers/{{ developerId }}">edit</a>
-  <ul class="games">
-    <li class="game-item" *ngFor="let game of games">
-      <div class="game-item__title"> {{ game.name }} </div>
-      <ul class="genres">
-        <li class="genre" *ngFor="let xref of game.gameXrefGenre"> {{ xref.genre.name }} </li>
-      </ul>
-      <a class="game-item__link" routerLink="/games/{{ game.gameId }}"> more </a>
-    </li>
-  </ul>
+  <div class="body__screen body__item body__item_x_center body__item_y_center">
+    <div class="details item-base ">
+
+      <h1 class="item-base__row item-base__title">Developer details</h1>
+
+      <div class="item-base__row">
+        <div class="item-base__label">Name:&nbsp;</div> {{ developer.name }}
+      </div>
+
+      <div class="item-base__row">
+        <div class="item-base__label">Games:</div>
+      </div>
+
+      <div class="item-base__row">
+        <div class="items-list">
+          <div class="items-list__item" *ngFor="let game of games">
+            <app-game-item [game]="game"></app-game-item>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-base__row">
+        <div class="body__item body__item_x_end">
+          <a class="text-button text-button_primary"
+             routerLink="/editor/developers/{{ developerId }}">edit</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </ng-container>
 <ng-template #preloader>
   <div class="preloader">loading ...</div>

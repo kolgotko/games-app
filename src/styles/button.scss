@@ -1,0 +1,63 @@
+.button {
+
+  display: inline-block;
+  text-align: center;
+  min-width: 100px;
+  color: $color-black;
+  border: 0px;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size:  0.875rem;
+  line-height: 1rem;
+  font-weight: bold;
+  box-shadow: $box-shadow;
+  transition: 0.3s background-color, box-shadow, color;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 5px;
+  background-color: #e0e0e0;
+
+  &:not(&_disabled) {
+    cursor: pointer;
+  }
+
+  &:active:not(&_disabled) {
+    box-shadow: $box-shadow-activated;
+  }
+
+  &_primary {
+
+    color: #fff;
+    background-color: $color-blue;
+
+    &:hover {
+      background-color: $color-blue-hovered;
+    }
+
+    &:active {
+      background-color: $color-blue-active;
+    }
+
+  }
+
+  &_secondary {
+
+    color: #fff;
+    background-color: $color-pink;
+
+    &:hover {
+      background-color: $color-pink-hovered;
+    }
+
+    &:active {
+      background-color: $color-pink-active;
+    }
+
+  }
+
+  &_disabled {
+    color: rgba(0, 0, 0, 0.26);
+    background-color: #d1d1d1;
+    box-shadow: none;
+  }
+}

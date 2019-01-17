@@ -1,14 +1,24 @@
 <ng-container *ngIf="load; else preloader">
-  <form [formGroup]="publisherForm" (ngSubmit)="updatePublisher()">
+  <form class="form" [formGroup]="publisherForm" (ngSubmit)="updatePublisher()">
 
-    name:
-    <ng-container *ngIf="isInvalidFormControl(publisherFormName)">
-      <div class="error-message" *ngIf="publisherFormName.errors.required">
-        name is required
-      </div>
-    </ng-container>
-    <input type="text" formControlName="name" />
-    <button class="submit-button" [class.submit-button_disabled]="publisherForm.invalid">save</button>
+    <div class="form__title form__row">Publisher editor</div>
+
+    <label class="input-base form__row"
+      [class.input-base_invalid]="isInvalidFormControl(publisherFormName)">
+
+      <div class="input-base__label input-base__label_required">Name</div>
+      <ng-container *ngIf="isInvalidFormControl(publisherFormName)">
+        <div class="input-base__message" *ngIf="publisherFormName.errors.required">
+          name is required
+        </div>
+      </ng-container>
+      <input class="input-base__input" type="text" formControlName="name" />
+
+    </label>
+
+    <button class="button form__row"
+      [class.button_disabled]="publisherForm.invalid"
+      [class.button_primary]="publisherForm.valid" >save</button>
 
   </form>
 </ng-container>
