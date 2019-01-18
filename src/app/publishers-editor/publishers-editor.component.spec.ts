@@ -1,6 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PublishersEditorComponent } from './publishers-editor.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+
+const activatedRouteStub = {
+  snapshot: { params: { id: 1 } },
+};
 
 describe('PublishersEditorComponent', () => {
   let component: PublishersEditorComponent;
@@ -8,7 +16,12 @@ describe('PublishersEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PublishersEditorComponent ]
+      declarations: [ PublishersEditorComponent ],
+      imports: [ ReactiveFormsModule, RouterModule, HttpClientModule ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteStub },
+      ],
     })
     .compileComponents();
   }));

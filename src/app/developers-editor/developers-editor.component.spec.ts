@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DevelopersEditorComponent } from './developers-editor.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Routes, RouterModule, ActivatedRoute } from '@angular/router';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DevelopersEditorComponent', () => {
   let component: DevelopersEditorComponent;
@@ -8,7 +12,9 @@ describe('DevelopersEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DevelopersEditorComponent ]
+      declarations: [ DevelopersEditorComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ],
+      imports: [ HttpClientModule, ReactiveFormsModule, RouterModule ],
     })
     .compileComponents();
   }));

@@ -9,25 +9,25 @@ import * as Noty from 'noty';
   templateUrl: './genre-editor.component.html',
   styleUrls: ['./genre-editor.component.scss']
 })
-export class GenreEditorComponent implements OnInit {
+export class GenreEditorComponent {
 
-  @Input() genre: GenreInterface;
+  private _genre: GenreInterface;
   @Input() show: Boolean = false;
   @Output() del: EventEmitter<void> = new EventEmitter;
   @Output() update: EventEmitter<void> = new EventEmitter;
-  control: FormControl;
+  control: FormControl = this.fb.control('', Validators.required);
 
   constructor(
     private fb: FormBuilder,
     private genresService: GenresService,
   ) { }
 
-  ngOnInit() {
-
-    this.control = this.fb
-      .control(this.genre.name, Validators.required);
-
+  @Input() set genre(genre: GenreInterface) {
+    this._genre = genre;
+    this.control.setValue(genre.name);
   }
+
+  get genre() { return this._genre; }
 
   hideEditor() { this.show = false; }
 

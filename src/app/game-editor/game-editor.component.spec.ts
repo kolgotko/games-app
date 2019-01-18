@@ -1,6 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameEditorComponent } from './game-editor.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+
+const activatedRouteStub = {
+  snapshot: { params: { id: 1 } },
+};
 
 describe('GameEditorComponent', () => {
   let component: GameEditorComponent;
@@ -8,7 +16,12 @@ describe('GameEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GameEditorComponent ]
+      declarations: [ GameEditorComponent ],
+      imports: [ ReactiveFormsModule, HttpClientModule, RouterModule, ],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteStub },
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
   }));
