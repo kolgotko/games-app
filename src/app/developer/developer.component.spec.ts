@@ -12,7 +12,7 @@ const activatedRouteStub = {
 
 const routerStub = {
   navigate: (...args) => { },
-}
+};
 
 describe('DeveloperComponent', () => {
   let component: DeveloperComponent;
