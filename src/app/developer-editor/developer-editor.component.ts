@@ -4,6 +4,8 @@ import { FormControl, AbstractControl, FormGroup, FormBuilder, Validators } from
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import * as Noty from 'noty';
+import { Observable, throwError, of, zip } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-developer-editor',
@@ -12,8 +14,7 @@ import * as Noty from 'noty';
 })
 export class DeveloperEditorComponent implements OnInit {
 
-  developerId = 0;
-  developer: DeveloperInterface;
+  developer: Observable<DeveloperInterface>;
   developerForm: FormGroup;
   load = false;
 
@@ -23,89 +24,75 @@ export class DeveloperEditorComponent implements OnInit {
     private developersService: DevelopersService,
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
 
-    this.developerId = this.route.snapshot.params.id;
-    this.initForm();
-    await this.loadDeveloper();
-    this.patchDeveloperForm();
-    this.load = true;
+    this.route.params.pipe(switchMap(params => of(params.id)))
+      .pipe(switchMap(( id: number ) => {
 
-  }
+        this.developer = this.developersService.getDeveloper(id);
+        return this.developer;
 
-  initForm() {
+      }))
+      .subscribe(developer => {
 
-    this.developerForm = this.fb.group({
-      name: ['', [
-        Validators.required,
-      ]],
-    });
+        this.developerForm = this.fb.group({
+          name: [developer.name, Validators.required],
+        });
 
-  }
+        this.load = true;
 
-  async loadDeveloper() {
+      }, error => {
 
-    try {
+        new Noty({
+          text: `Error load developer data. Details: ${error.message}`,
+          type: 'error',
+          timeout: false,
+        })
+          .show();
 
-      this.developer = await this.developersService
-        .getDeveloper(this.developerId)
-        .toPromise();
-
-    } catch (error) {
-
-      new Noty({
-        text: `Error load developer data. Details: ${error.message}`,
-        type: 'error',
-        timeout: false,
-      })
-        .show();
-
-    }
+      });
 
   }
 
-  patchDeveloperForm() {
+  saveDeveloper() {
 
-    this.developerForm
-      .patchValue(this.developer);
+    if (this.developerForm.invalid) { return; }
 
-  }
+    this.developer.pipe(switchMap(developer => {
 
-  async saveDeveloper() {
+      const data = {
+        developerId: developer.developerId,
+        ...this.developerForm.value,
+      };
 
-    if (this.developerForm.invalid) {
-      return;
-    }
+      let update = this.developersService.updateDeveloper(data);
+      return zip(of(developer.developerId), update);
 
-    const data = {
-      developerId: this.developerId,
-      ...this.developerForm.value,
-    };
+    }))
+      .pipe(switchMap(([id, _]) => {
 
-    try {
+        this.developer = this.developersService.getDeveloper(id);
+        return this.developer;
 
-      await this.developersService
-        .updateDeveloper(data)
-        .toPromise();
+      }))
+      .subscribe(developer => {
 
-      await this.loadDeveloper();
+        new Noty({
+          text: `developer "${developer.name}" saved!`,
+          type: 'success',
+        })
+          .show();
 
-      new Noty({
-        text: `developer "${data.name}" saved!`,
-        type: 'success',
-      })
-        .show();
+      }, error => {
 
-    } catch (error) {
+        new Noty({
+          text: `Error saving developer. Details: ${error.message}`,
+          type: 'success',
+          timeout: false,
+        })
+          .show();
 
-      new Noty({
-        text: `Error saving developer. Details: ${error.message}`,
-        type: 'success',
-        timeout: false,
-      })
-        .show();
-
-    }
+      });
 
   }
 
