@@ -6,6 +6,7 @@ import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import * as Noty from 'noty';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-developers-editor',
@@ -14,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class DevelopersEditorComponent implements OnInit {
 
-  developers: Observable<DeveloperInterface[]>;
+  developers: DeveloperInterface[];
   newDeveloperForm: FormGroup;
   load = false;
 
@@ -25,9 +26,24 @@ export class DevelopersEditorComponent implements OnInit {
 
   ngOnInit() {
 
-    this.developers = this.developersService.getAllDevelopers();
+
     this.initNewDeveloperForm();
-    this.load = true;
+    this.developersService.getAllDevelopers()
+      .subscribe(developers => {
+
+        this.developers = developers;
+        this.load = true;
+
+      }, error => {
+
+        new Noty({
+          text: `Error load developers. Details: ${error.message}`,
+          type: 'error',
+          timeout: false,
+        })
+          .show();
+
+      });
 
   }
 
@@ -60,9 +76,10 @@ export class DevelopersEditorComponent implements OnInit {
     };
 
     this.developersService.createDeveloper(data)
-      .subscribe(_ => {
+      .pipe(switchMap(_ => this.developersService.getAllDevelopers()))
+      .subscribe(developers => {
 
-        this.developers = this.developersService.getAllDevelopers();
+        this.developers = developers;
         this.newDeveloperForm.reset();
 
         new Noty({
@@ -87,9 +104,10 @@ export class DevelopersEditorComponent implements OnInit {
   deleteDeveloper(id: number) {
 
     this.developersService.deleteDeveloper(id)
-      .subscribe(_ => {
+      .pipe(switchMap(_ => this.developersService.getAllDevelopers()))
+      .subscribe(developers => {
 
-        this.developers = this.developersService.getAllDevelopers();
+        this.developers = developers;
         new Noty({
           text: 'developer deleted!',
           type: 'success',
