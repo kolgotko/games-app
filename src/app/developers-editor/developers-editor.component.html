@@ -1,7 +1,7 @@
 <h2 class="title">Existing developers</h2>
-<ng-container *ngIf="load; else preloader">
+<ng-container *ngIf="developers | async; else preloader">
   <ul class="developers items-list">
-    <li class="item-base developer items-list__item" *ngFor="let developer of developers">
+    <li class="item-base developer items-list__item" *ngFor="let developer of developers | async">
       <div class="developer__name item-base__title">{{ developer.name }}</div>
       <a class="text-button text-button_primary item-base__inline-item"
         routerLink="/editor/developers/{{ developer.developerId }}">edit</a>

@@ -5,6 +5,7 @@ import {
 import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import * as Noty from 'noty';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-developers-editor',
@@ -13,7 +14,7 @@ import * as Noty from 'noty';
 })
 export class DevelopersEditorComponent implements OnInit {
 
-  developers: DeveloperInterface[] = [];
+  developers: Observable<DeveloperInterface[]>;
   newDeveloperForm: FormGroup;
   load = false;
 
@@ -22,10 +23,10 @@ export class DevelopersEditorComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
 
+    this.developers = this.developersService.getAllDevelopers();
     this.initNewDeveloperForm();
-    await this.loadDevelopers();
     this.load = true;
 
   }
@@ -40,15 +41,7 @@ export class DevelopersEditorComponent implements OnInit {
 
   }
 
-  async loadDevelopers() {
-
-    this.developers = await this.developersService
-      .getAllDevelopers()
-      .toPromise();
-
-  }
-
-  async createDeveloper() {
+  createDeveloper() {
 
     if (this.newDeveloperForm.invalid) {
 
@@ -58,6 +51,7 @@ export class DevelopersEditorComponent implements OnInit {
       return;
     }
 
+
     const name = this.newDeveloperForm.get('name').value;
 
     const data = {
@@ -65,47 +59,53 @@ export class DevelopersEditorComponent implements OnInit {
       name,
     };
 
-    try {
+    this.developersService.createDeveloper(data)
+      .subscribe(_ => {
 
-      await this.developersService
-        .createDeveloper(data)
-        .toPromise();
+        this.developers = this.developersService.getAllDevelopers();
+        this.newDeveloperForm.reset();
 
-      await this.loadDevelopers();
-      this.newDeveloperForm.reset();
+        new Noty({
+          text: `developer ${name} created!`,
+          type: 'success',
+        })
+          .show();
 
-      new Noty({
-        text: `developer ${name} created!`,
-        type: 'success',
-      })
-        .show();
+      }, error => {
 
-    } catch (error) {
+        new Noty({
+          text: `Error create developer. Details: ${error.message}`,
+          type: 'success',
+          timeout: false,
+        })
+          .show();
 
-      new Noty({
-        text: `Error create developer. Details: ${error.message}`,
-        type: 'success',
-        timeout: false,
-      })
-        .show();
-
-    }
+      });
 
   }
 
-  async deleteDeveloper(id: number) {
+  deleteDeveloper(id: number) {
 
-    await this.developersService
-      .deleteDeveloper(id)
-      .toPromise();
+    this.developersService.deleteDeveloper(id)
+      .subscribe(_ => {
 
-    await this.loadDevelopers();
+        this.developers = this.developersService.getAllDevelopers();
+        new Noty({
+          text: 'developer deleted!',
+          type: 'success',
+        })
+          .show();
 
-    new Noty({
-      text: 'developer deleted!',
-      type: 'success',
-    })
-      .show();
+      }, error => {
+
+        new Noty({
+          text: `Error deleteing developer. Details: ${error.message}!`,
+          type: 'error',
+          timeout: false,
+        })
+          .show();
+
+      });
 
   }
 
