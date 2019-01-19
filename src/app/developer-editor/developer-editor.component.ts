@@ -26,10 +26,9 @@ export class DeveloperEditorComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.params.pipe(switchMap(params => of(params.id)))
-      .pipe(switchMap(( id: number ) => {
+    this.route.params.pipe(switchMap(( params ) => {
 
-        this.developer = this.developersService.getDeveloper(id);
+        this.developer = this.developersService.getDeveloper(params.id);
         return this.developer;
 
       }))
@@ -65,7 +64,7 @@ export class DeveloperEditorComponent implements OnInit {
         ...this.developerForm.value,
       };
 
-      let update = this.developersService.updateDeveloper(data);
+      const update = this.developersService.updateDeveloper(data);
       return zip(of(developer.developerId), update);
 
     }))

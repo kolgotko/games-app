@@ -4,6 +4,8 @@ import { DevelopersService } from '../developers.service';
 import { DeveloperInterface } from '../interfaces/developer.interface';
 import { GameInterface } from '../interfaces/game.interface';
 import * as Noty from 'noty';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-developer',
@@ -14,7 +16,6 @@ export class DeveloperComponent implements OnInit {
 
   developerId = 0;
   developer: DeveloperInterface;
-  title = '';
   games: GameInterface[] = [];
   load = false;
 
@@ -24,38 +25,31 @@ export class DeveloperComponent implements OnInit {
     private developersService: DevelopersService,
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
 
-    const id = this.route.snapshot.params.id;
-    this.developerId = id;
+    this.route.params.pipe(switchMap(params => {
 
-    await this.loadDeveloper();
+      return this.developersService.getDeveloper(params.id);
 
-    this.games = this.developer.game;
-    this.load = true;
+    }))
+      .subscribe(developer => {
 
-  }
+        this.developer = developer;
+        this.games = developer.game;
+        this.load = true;
 
-  async loadDeveloper() {
+      }, error => {
 
-    try {
+        new Noty({
+          text: `Error load developer data. Details: ${error.message}`,
+          type: 'error',
+          timeout: false,
+        })
+          .show();
 
-      this.developer = await this.developersService
-        .getDeveloper(this.developerId)
-        .toPromise();
+        this.router.navigate(['/']);
 
-    } catch (error) {
-
-      new Noty({
-        text: `Error load developer. Please try later. Details: ${error.message}`,
-        type: 'error',
-        timeout: false,
-      })
-        .show();
-
-      this.router.navigate(['/']);
-
-    }
+      });
 
   }
 
