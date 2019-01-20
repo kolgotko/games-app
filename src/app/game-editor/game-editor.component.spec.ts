@@ -4,10 +4,14 @@ import { GameEditorComponent } from './game-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 
 const activatedRouteStub = {
   snapshot: { params: { id: 1 } },
+};
+
+const routerStub = {
+  navigate: _ => {},
 };
 
 describe('GameEditorComponent', () => {
@@ -20,6 +24,7 @@ describe('GameEditorComponent', () => {
       imports: [ ReactiveFormsModule, HttpClientModule, RouterModule, ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
+        { provide: Router , useValue: routerStub },
       ],
       schemas: [ NO_ERRORS_SCHEMA ],
     })

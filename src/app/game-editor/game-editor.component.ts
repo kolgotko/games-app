@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder, FormGroup, FormControl, FormArray, Validators, AbstractControl
 } from '@angular/forms';
@@ -44,18 +44,35 @@ export class GameEditorComponent implements OnInit {
     private genresService: GenresService,
     private gameXrefGenresService: GameXrefGenresService,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
 
     this.gameId = this.route.snapshot.params.id;
     this.initGameForm();
-    await this.loadGame();
-    await this.loadDevelopers();
-    await this.loadPublishers();
-    await this.loadGenres();
-    this.patchForms();
-    this.load = true;
+
+    try {
+
+      await this.loadGame();
+      await this.loadDevelopers();
+      await this.loadPublishers();
+      await this.loadGenres();
+      this.patchForms();
+      this.load = true;
+
+    } catch (error) {
+
+      new Noty({
+        text: `Error loading game editor: Details: ${error.message}`,
+        type: 'error',
+        timeout: false,
+      })
+        .show();
+
+      this.router.navigate(['/editor/games']);
+
+    }
 
   }
 
